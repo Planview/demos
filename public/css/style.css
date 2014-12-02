@@ -1,0 +1,11 @@
+body {
+	margin:1em 2em 2em 2em;
+}
+section#page-body {
+	max-width:1000px;
+	margin-left:auto !important;
+	margin-right:auto !important;
+}
+main {
+	margin-bottom:2em;
+}
