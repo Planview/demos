@@ -52,6 +52,14 @@ App::error(function(Exception $exception, $code)
 });
 
 /*
+App::missing(function($exception)
+{
+    //return Response::view('errors.missing', array(), 404);
+	return Response::view('master.errors', array(), 404);
+});
+*/
+
+/*
 |--------------------------------------------------------------------------
 | Maintenance Mode Handler
 |--------------------------------------------------------------------------

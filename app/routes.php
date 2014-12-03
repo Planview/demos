@@ -11,19 +11,11 @@
 |
 */
 
-/*
-Route::get('/', function()
-{
-	return View::make('hello');
-});
-*/
-
 Route::get('/', function()
 {
     //$view = View::make('greeting')->with('name', 'Scotty Scott');
 	//$view = View::make('greeting')->withName('Scotty Viper');
 	//$view = View::make('greeting')->nest('child', 'child.view');
-
     $data = array(
         'heading' => 'You know what?',
         'body' => 'This is totally awesome!',
@@ -33,10 +25,9 @@ Route::get('/', function()
     //return View::make('greeting', $data);
 	//return View::make('greeting')->nest('child', 'child.view', $data)->with('first_name', 'Scotty')->with('last_name', 'Scott');
 	return View::make('greeting')->nest('child', 'child.view', $data)->with($data);
-
 });
 
-Route::resource('demos', 'DemosController');
+Route::resource('demos', 'DemosController', ['only' => ['index', 'show']]);
 
 /*
 Route::get('/{page}', function ($page) {
@@ -57,7 +48,6 @@ Route::get('users', function()
 {
     return View::make('users');
 });
-
 */
 
 Route::get('users', function()
@@ -73,3 +63,14 @@ Event::listen('laravel.query'), function($sql) {
     var_dump($sql);
 }
 */
+//Route::group(array('prefix' => 'pvadmin'), function()
+Route::group(['prefix' => 'pvadmin', 'namespace' => 'pvadmin'], function()
+{
+    Route::resource('demos', 'DemosController');
+    /*
+    Route::get('demos', function()
+    {
+        return "<h1>Demos Admin Area</h1>";
+    });
+    */
+});

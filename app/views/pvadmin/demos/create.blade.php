@@ -4,13 +4,9 @@
 	Create a New Demo
 @stop
 
-@section("page_breadcrumb")
-	{{HTML::link('/demos', 'back to product demos');}}
-@stop
-
 @section("page_content")
 	<article>
-	{{ Form::open(array('url' => '/demos', 'method' => 'POST')); }}		
+	{{ Form::open(array('url' => '/pvadmin/demos', 'method' => 'POST')); }}		
 	{{ Form::label('demo_title', 'Demo Title: '); }}
 	{{ Form::text('demo_title', '', array('id' => 'demo_title')); }}<br />
 	{{ Form::label('demo_description', 'Demo Description: '); }}

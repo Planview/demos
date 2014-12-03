@@ -1,5 +1,12 @@
 <?php
 
+namespace pvadmin;
+
+use Demo;
+use Input;
+use Session;
+use View;
+
 class DemosController extends \BaseController {
 
 	/**
@@ -9,12 +16,9 @@ class DemosController extends \BaseController {
 	 */
 	public function index()
 	{
-		//$demos = Demo::paginate(5);
-		//$demos = Demo::orderBy('title', 'asc')->paginate(5);
-		//$demos = Demo::orderBy('title', 'asc')->get();
-		$demos = Demo::orderBy('title', 'asc')->get();
+		$demos = Demo::withTrashed()->orderBy('title', 'asc')->get();
 		
-		return View::make("demos.index")->with(array("demos"=>$demos));
+		return View::make("pvadmin.demos.index")->with(array("demos"=>$demos));
 	}
 
 
@@ -25,11 +29,7 @@ class DemosController extends \BaseController {
 	 */
 	public function create()
 	{
-		App::abort(404);
-		/*
-		// return 'the create function';
-		return View::make("demos.create");
-		*/
+		return View::make("pvadmin.demos.create");
 	}
 
 
@@ -40,16 +40,13 @@ class DemosController extends \BaseController {
 	 */
 	public function store()
 	{
-		App::abort(404);
-		/*
-		// return 'the store function';
 		$demo = new Demo;
 		$demo->title = Input::get('demo_title');
 		$demo->description = Input::get('demo_description');
 		$demo->save();
 
-		return View::make("demos.store")->with(array("demo"=>$demo));
-		*/	
+		Session::flash('page_messages', 'Demo Created!');
+		return View::make("pvadmin.demos.show")->with(array("demo"=>$demo));
 	}
 
 
@@ -61,9 +58,8 @@ class DemosController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
-		$demo = Demo::findOrFail($id);
-		return View::make("demos.show")->with(array("demo"=>$demo));
+		$demo = Demo::withTrashed()->findOrFail($id);
+		return View::make("pvadmin.demos.show")->with(array("demo"=>$demo));
 	}
 
 
@@ -75,13 +71,8 @@ class DemosController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		App::abort(404);
-		/*
-		// /demos/1/edit
-		// return 'the edit function';
 		$demo = Demo::withTrashed()->findOrFail($id);
-		return View::make("demos.edit")->with(array("demo"=>$demo));
-		*/
+		return View::make("pvadmin.demos.edit")->with(array("demo"=>$demo));
 	}
 
 
@@ -93,27 +84,19 @@ class DemosController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		App::abort(404);
-		/*
-		// /demos/1
-		// return 'the update function';
 		if (Input::get('submit_button_restore')) {
 			$restoreDemo = Demo::withTrashed()->where('id', $id)->restore();
-			$demo = Demo::withTrashed()->findOrFail($id);
-			if (stripos($demo->title,"EXPIRED: ") === 0) {
-				$demo->title = substr($demo->title,8);
-				$demo->save();
-			}
+			$page_messages = 'Demo Restored!';
 		} else {
 			$demo = Demo::withTrashed()->find($id);
 			$demo->title = Input::get('demo_title');
 			$demo->description = Input::get('demo_description');
 			$demo->save();
+			$page_messages = 'Demo Updated!';
 		}
 
 		$demo = Demo::withTrashed()->findOrFail($id);
-		return View::make("demos.update")->with(array("demo"=>$demo));
-		*/	
+		return View::make("pvadmin.demos.show")->withPage_messages($page_messages)->with(array("demo"=>$demo));		
 	}
 
 
@@ -125,16 +108,11 @@ class DemosController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		App::abort(404);
-		/*
-		//return 'the destroy function';
 		$demo = Demo::withTrashed()->find($id);
-		$demo->title = "EXPIRED: ".$demo->title;
-		$demo->save();
 		$dseatroyDemo = Demo::destroy($id);
+		$page_messages = 'Demo Expired!';
 
-		return View::make("demos.destroy")->with(array("demo"=>$demo));
-		*/
+		return View::make("pvadmin.demos.show")->withPage_messages($page_messages)->with(array("demo"=>$demo));
 	}
 
 
