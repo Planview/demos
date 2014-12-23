@@ -10,9 +10,9 @@
     <meta name="description" content="{{{ $meta_description or '' }}}" />
     <meta name="robots" content="{{{ $robots or 'noindex,nofollow' }}}" />
     <!-- Bootstrap -->
-    <!-- <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -22,38 +22,54 @@
     <link href="/css/style.css" rel="stylesheet">
   </head>
   <body>
+  <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+  <header id="site-header">
+    <nav id="nav-menu-demos" class="menu-top">
 
-  <nav id="nav-menu-demos" class="menu-top">
-      {{HTML::link('/demos', 'back to demos');}}
-  </nav>
+    <ul>
+      <li>{{HTML::link('/demos', 'Home', array('id' => 'topnav-home'));}}</li>
+      <li>{{HTML::link('/demos', 'Demos', array('id' => 'topnav-demos'));}}</li>
+      <li>{{HTML::link('/demos', 'Logout', array('id' => 'topnav-logout'));}}</li>
 
-  <nav id="nav-menu-admin" class="menu-top">
-    @section('nav_menu_admin')
-   		{{HTML::link('/pvadmin/demos', 'view all demos');}} | 
-   		{{HTML::link('/pvadmin/demos/create', 'create a new demo');}}
-    @show
-  </nav>
+        <li>{{HTML::link('/pvadmin/demos', 'Admin', array('id' => 'topnav-admin'));}}
+        <ul id="topnav-admin-dropdown">
+        @section('nav_menu_admin')
+          <li>{{HTML::link('/pvadmin/demos', 'View All Demos', array('id' => 'topnav-admin-demos'));}}</li>
+          <li>{{HTML::link('/pvadmin/demos/create', 'Create a New Demo', array('id' => 'topnav-admin-create'));}}</li>  
+        @show
+        </ul>
 
-	<section id="page-body">
+      </li>     
+    </ul>
+    </nav>
+  </header>
+  <main id="content">
+    <section id="page-body">
 
-        @yield("page_messages",'')
+      @yield("page_messages",'')
 
-        <h1>
-        	@yield("page_title")
+      <header class="entry-header">
+        <h1 class="entry-title">
+          @yield("page_title")
         </h1>
+      </header>
 
-		<main>
-			@yield("page_content")
-		</main>
+		  <div class="entry-content">
+        @yield("page_content")
+		  </div>
 
-	</section>
+    </section>
 
-@section('footer_scripts')
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <!-- <script src="/js/bootstrap.min.js"></script> -->
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-  <!-- individual page scripts -->
-@show
+  @section('footer_scripts')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
+    <!-- individual page scripts -->
+  @show
+  </main>
+  <footer id="site-footer">
+    &copy; <?php echo date("Y"); ?> Planview, Inc., All Rights Reserved. 
+  </footer>
   </body>
 </html>

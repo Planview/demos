@@ -4,6 +4,7 @@ namespace pvadmin;
 
 use Demo;
 use Input;
+use Redirect;
 use Session;
 use View;
 
@@ -44,9 +45,9 @@ class DemosController extends \BaseController {
 		$demo->title = Input::get('demo_title');
 		$demo->description = Input::get('demo_description');
 		$demo->save();
+		$page_messages = 'Demo Created: '.$demo->title;
 
-		Session::flash('page_messages', 'Demo Created!');
-		return View::make("pvadmin.demos.show")->with(array("demo"=>$demo));
+		return Redirect::route('pvadmin.demos.index')->withPage_messages($page_messages);
 	}
 
 
@@ -86,17 +87,17 @@ class DemosController extends \BaseController {
 	{
 		if (Input::get('submit_button_restore')) {
 			$restoreDemo = Demo::withTrashed()->where('id', $id)->restore();
-			$page_messages = 'Demo Restored!';
+			$demo = Demo::withTrashed()->findOrFail($id);
+			$page_messages = 'Demo Restored: '.$demo->title;
 		} else {
 			$demo = Demo::withTrashed()->find($id);
 			$demo->title = Input::get('demo_title');
 			$demo->description = Input::get('demo_description');
 			$demo->save();
-			$page_messages = 'Demo Updated!';
+			$page_messages = 'Demo Updated: '.$demo->title;
 		}
 
-		$demo = Demo::withTrashed()->findOrFail($id);
-		return View::make("pvadmin.demos.show")->withPage_messages($page_messages)->with(array("demo"=>$demo));		
+		return Redirect::route('pvadmin.demos.index')->withPage_messages($page_messages)->with(array("demo"=>$demo));		
 	}
 
 
@@ -110,9 +111,9 @@ class DemosController extends \BaseController {
 	{
 		$demo = Demo::withTrashed()->find($id);
 		$dseatroyDemo = Demo::destroy($id);
-		$page_messages = 'Demo Expired!';
+		$page_messages = 'Demo Expired: '.$demo->title;
 
-		return View::make("pvadmin.demos.show")->withPage_messages($page_messages)->with(array("demo"=>$demo));
+		return Redirect::route('pvadmin.demos.index')->withPage_messages($page_messages);
 	}
 
 

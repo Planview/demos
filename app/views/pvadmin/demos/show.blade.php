@@ -4,18 +4,12 @@
 	@if ($demo->deleted_at)
 		EXPIRED: 
 	@endif
-	{{{$demo->title}}} - show
+	{{{$demo->title}}}
 @stop
 
 @section("nav_menu_admin")
 	@parent
-	| {{HTML::link('/pvadmin/demos/'.$demo->id.'/edit', 'edit this demo');}}
-@stop
-
-@section("page_messages")
-	@if(isset($page_messages))
-		<h2>{{{$page_messages}}}</h2>
-	@endif
+	<li>{{HTML::link('/pvadmin/demos/'.$demo->id.'/edit', 'Edit This Demo', array('id' => 'topnav-admin-view'));}}</li>
 @stop
 
 @section("page_content")

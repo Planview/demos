@@ -6,7 +6,7 @@
 
 @section("nav_menu_admin")
 	@parent
-	| {{HTML::link('/pvadmin/demos/'.$demo->id.'/edit', 'edit this demo');}}
+	<li>{{HTML::link('/pvadmin/demos/'.$demo->id.'/edit', 'Edit This Demo', array('id' => 'topnav-admin-view'));}}</li>
 @stop
 
 @section("page_content")

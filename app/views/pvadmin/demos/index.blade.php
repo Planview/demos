@@ -4,6 +4,12 @@
 	Planview Product Demos
 @stop
 
+@section("page_messages")
+	@if(Session::has('page_messages'))
+		<h2>{{{Session::get('page_messages')}}}</h2>
+	@endif
+@stop
+
 @section("page_content")
 	<article>
 	@forelse($demos as $demo)
@@ -20,9 +26,4 @@
 	@endforeach
 	</article>
 	{{--$demos->links()--}}
-@stop
-
-@section('footer_scripts')
-    @parent
-   <!-- individual page script -->
 @stop

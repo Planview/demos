@@ -27,6 +27,11 @@ Route::get('/', function()
 	return View::make('greeting')->nest('child', 'child.view', $data)->with($data);
 });
 
+Route::get('/mockup', function()
+{
+    return View::make('mockup');
+});
+
 Route::resource('demos', 'DemosController', ['only' => ['index', 'show']]);
 
 /*
