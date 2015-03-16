@@ -1,10 +1,10 @@
 @extends("master.layout")
 
-@section("page_title")
+@section("title")
 	Planview Product Demos
 @stop
 
-@section("page_content")
+@section("content")
 	<article>
 	@forelse($demos as $demo)
 		@if (!$demo->deleted_at)

@@ -3,7 +3,7 @@
 <title>Laravel Quickstart</title>
 </head>
     <body>
-        <h1>Laravel Quickstart</h1>
+        <h1>Laravel Quickstart - Users</h1>
 
         @yield('content')
 

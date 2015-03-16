@@ -1,7 +1,11 @@
 @extends("master.layout")
 
-@section("page_title")
+@section("title")
 	The Page You Requested Cannot Be Found (404 Error)
+@stop
+
+@section("page_title")
+    The Page You Requested Cannot Be Found (404 Error)
 @stop
 
 @section("page_content")

@@ -6,7 +6,10 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"fzaninotto/faker": "~1.4"
+		"fzaninotto/faker": "~1.4",
+        "zizaco/confide": "~4.0@dev",
+        "zizaco/entrust": "1.2.*@dev",
+        "patricktalmadge/bootstrapper": "~5"
 	},
 	"autoload": {
 		"classmap": [

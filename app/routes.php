@@ -55,12 +55,16 @@ Route::get('users', function()
 });
 */
 
+Route::resource('users', 'UsersController');
+
+/*
 Route::get('users', function()
 {
     $users = User::all();
 
     return View::make('users')->with('users', $users);
 });
+*/
 
 /*
 // print sql query
@@ -68,14 +72,25 @@ Event::listen('laravel.query'), function($sql) {
     var_dump($sql);
 }
 */
-//Route::group(array('prefix' => 'pvadmin'), function()
+
 Route::group(['prefix' => 'pvadmin', 'namespace' => 'pvadmin'], function()
 {
     Route::resource('demos', 'DemosController');
-    /*
-    Route::get('demos', function()
-    {
-        return "<h1>Demos Admin Area</h1>";
-    });
-    */
+    Route::resource('permissions', 'PermissionsController');
+    Route::resource('roles', 'RolesController');
+    Route::resource('users', 'UsersController');
 });
+
+// Confide routes
+Route::get('users/create', 'UsersController@create');
+Route::post('users', 'UsersController@store');
+Route::get('users/login', 'UsersController@login');
+Route::post('users/login', 'UsersController@doLogin');
+Route::get('users/confirm/{code}', 'UsersController@confirm');
+Route::get('users/forgot_password', 'UsersController@forgotPassword');
+Route::post('users/forgot_password', 'UsersController@doForgotPassword');
+Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
+Route::post('users/reset_password', 'UsersController@doResetPassword');
+Route::get('users/logout', 'UsersController@logout');
+
+Route::get('users', 'UsersController@index');
