@@ -1,8 +1,8 @@
 <?php
 
-// use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
-
-class Isr extends Eloquent {
+class Isr extends Eloquent 
+{
+    public $fillable = array('isr_first_name','isr_last_name','isr_phone','isr_mobile_phone','isr_location');
     /**
      * Make a list for options in a select
      * @return array All ISRs keyed as id => name
@@ -15,5 +15,11 @@ class Isr extends Eloquent {
             $list[$isr->user_id] = $isr->isr_first_name.' '.$isr->isr_last_name;
         }
         return $list;
+    }
+
+    public function user()
+    {
+        // isr_user
+        return $this->belongsTo('User');
     }
 }

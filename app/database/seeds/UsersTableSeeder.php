@@ -30,6 +30,7 @@ class UsersTableSeeder extends Seeder {
             }
 
             User::create(array(
+                'username'              => null,
                 'email'                 => $userEmail,
                 'password'              => $password,
                 'confirmation_code'     => md5(uniqid(mt_rand(), true)),

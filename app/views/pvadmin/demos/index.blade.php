@@ -1,7 +1,10 @@
-@extends("master.layout-admin")
+<?php
+    $body_class = "admin";
+?>
+@extends("master.layout")
 
 @section("title")
-    Planview Product Demos
+    Manage Product Demos
 @stop
 
 @section("page_messages")
@@ -19,7 +22,7 @@
                 @if (!$demo->deleted_at)
                     <li class="list-group-item">
                     <h4 class="list-group-item-heading">{{{$demo->title}}} <small>{{{$demo->language}}}, PVE {{{$demo->enterprise_version}}}</small></h4>
-                        {{ Button::primary('Edit')->asLinkTo(route('pvadmin.demos.edit', ['id' => $demo->id])) }}
+                        {{ Button::primary('Edit')->asLinkTo(route('pvadmin.demos.show', ['id' => $demo->id])) }}
                         {{ Form::inline([
                             'route' => ['pvadmin.demos.destroy', $demo->id],
                             'class' => 'form-button form-button-delete',
@@ -37,7 +40,7 @@
                 @if ($demo->deleted_at)
                     <li class="list-group-item">
                     <h4 class="list-group-item-heading">EXPIRED: {{{$demo->title}}} <small>{{{$demo->language}}}, PVE {{{$demo->enterprise_version}}}</small></h4>
-                        {{ Button::primary('Edit')->asLinkTo(route('pvadmin.demos.edit', ['id' => $demo->id])) }}
+                        {{ Button::primary('Edit')->asLinkTo(route('pvadmin.demos.show', ['id' => $demo->id])) }}
                         {{ Form::inline([
                             'route' => ['pvadmin.demos.destroy', $demo->id],
                             'class' => 'form-button form-button-delete',

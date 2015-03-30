@@ -7,6 +7,9 @@
 @section("styles")
     @parent
     <link type="text/css" href="/css/jquery-datepick.css" rel="stylesheet" />
+    <style>
+        button#generate_password { margin-right:1em; }
+    </style>
 @stop
 
 @section("page_messages")
@@ -37,7 +40,7 @@
                 ) }}
                 {{ ControlGroup::generate(
                     Form::label('password', 'New Password'),
-                    Form::password('password') . $errors->first('password', '<span class="label label-danger">:message</span>'),
+                    Form::text('password') . $errors->first('password', '<span class="label label-danger">:message</span>'),
                     null,
                     3
                 ) }}
@@ -45,6 +48,12 @@
                     Form::label('password_confirmation', 'Confirm New Password'),
                     Form::password('password_confirmation') . $errors->first('password_confirmation', '<span class="label label-danger">:message</span>'),
                     null,
+                    3
+                ) }}
+                {{ ControlGroup::generate(
+                    Form::label('password_help', 'Generate Password'),
+                    Button::success('Generate a New Password')->withAttributes(['id' =>'generate_password']),
+                    Button::primary('Clear Password Field')->withAttributes(['id' =>'clear_password']),
                     3
                 ) }}
             @endif
@@ -162,5 +171,27 @@
         $(function() {
             $('#expires').datepick();
         });
+        $(document).ready(function(){ 
+            $("#generate_password").click(function(){
+                var the_password = generatePassword();
+                $("#password").val(the_password);
+                $("#password_confirmation").val(the_password);
+                $(this).blur();
+            });
+            $("#clear_password").click(function(){
+                $("#password").val('');
+                $("#password_confirmation").val('');
+                $(this).blur();
+            });
+        });
+        function generatePassword() {
+            var length = 8,
+                charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            return retVal;
+        }
     </script>
 @stop

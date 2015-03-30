@@ -1,21 +1,5 @@
 <?php
 
-use App;
-use Config;
-use Input;
-use Lang;
-use Mail;
-use Response;
-use Redirect;
-use Session;
-use View;
-use URL;
-
-use Demo;
-use Isr;
-use User;
-use UserDemoAccess;
-
 class UsersController extends Controller
 {
 
@@ -41,8 +25,9 @@ class UsersController extends Controller
     public function create()
     {
         //return View::make(Config::get('confide::signup_form'));
-        $user = new User();
-        $isrs = Isr::isrList();
+        $user  = new User();
+        $isrs  = User::isrList();
+        $roles = Role::optionsList();
         $demos = Demo::orderBy('language', 'asc')
                      ->orderBy('enterprise_version', 'desc')
                      ->orderBy('title', 'asc')->get();
@@ -77,7 +62,9 @@ class UsersController extends Controller
 
         if ($user->save()) {
             $user->confirm();
-            if ($user_demo_access = UserDemoAccess::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
+            // if ($user_demo_access = UserDemoAccess::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
+            if ($user_demo_access = User::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
+            // if ($user_demo_access = $user::updateUserDemoAccess(Input::get('demo-access'))) {
                 // return Redirect::action('users.show', $user->id)
                 return Redirect::action('users.index')
                       ->with('message', "The user {$user->email} was successfully created.<br />Their password is: ".$password."<br />Their expiration date is: {$user->expires}");
@@ -106,15 +93,15 @@ class UsersController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
-    //public function show($user)
+    // public function show($id)
+    public function show($user)
     {
-        $user = User::findOrFail($id);
-        $isrs = Isr::isrList();
+        // $user  = User::findOrFail($id);
+        $isrs  = User::isrList();
         $demos = Demo::orderBy('language', 'asc')
                      ->orderBy('enterprise_version', 'desc')
                      ->orderBy('title', 'asc')->get();
-        $user_demo_access = UserDemoAccess::accessList($id);
+        $user_demo_access = $user->demoAccessList();
 
         return View::make('users.form')->with([
             'title'             => "Update User: {$user->email}",
@@ -133,9 +120,10 @@ class UsersController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    // public function update($id)
+    public function update($user)
     {
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id);
         if (Input::get('password')) {
             if (Input::get('password') === Input::get('password_confirmation')) {
                 $user->password = Input::get('password');
@@ -152,17 +140,10 @@ class UsersController extends Controller
         $user->isr_contact_id = Input::get('isr_contact_id');
 
         if ($user->save()) {
-            $demo_selections = Input::get('demo-access');
-            if ($user_demo_access = UserDemoAccess::updateUserDemoAccess($user->id, $demo_selections)) {
-                // return Redirect::to(URL::route('users.index'))
-                return Redirect::action('users.show', $user->id)
-                      ->with('message', "The user {$user->email} was successfully updated.");
-            } else {
-                return Redirect::route('users.show', $user->id)
-                    ->withInput(Input::except('password'))
-                    ->withError('There was a problem with your submission. The demo access selections did not save.');
-            }
+            $user->demos()->sync(Input::get('demo-access'));
 
+            return Redirect::action('users.show', $user->id)
+                  ->with('message', "The user {$user->email} was successfully updated.");
         } else {
             return Redirect::route('users.show', $user->id)
                 ->withInput(Input::except('password'))
@@ -176,14 +157,15 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function login()
-    {
-        if (Confide::user()) {
-            return Redirect::to('/');
-        } else {
-            return View::make(Config::get('confide::login_form'));
-        }
-    }
+    // public function login()
+    // {
+    //     if (Confide::user()) {
+    //         return Redirect::to('/');
+    //     } else {
+    //         // return View::make(Config::get('confide::login_form'));
+    //         return View::make('home');
+    //     }
+    // }
 
     /**
      * Attempt to do login
@@ -206,7 +188,8 @@ class UsersController extends Controller
                 $err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
             }
 
-            return Redirect::action('UsersController@login')
+            // return Redirect::action('UsersController@login')
+            return Redirect::to('/')
                 ->withInput(Input::except('password'))
                 ->with('error', $err_msg);
         }
@@ -310,6 +293,6 @@ class UsersController extends Controller
     {
         Confide::logout();
 
-        return Redirect::to('/');
+        return Redirect::to('/')->with('message', "You are now logged out.");;
     }
 }

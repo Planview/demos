@@ -1,7 +1,10 @@
-@extends("master.layout-admin")
+<?php
+    $body_class = "admin";
+?>
+@extends("master.layout")
 
 @section("title")
-    Permissions
+    Manage Permissions
 @stop
 
 @section("page_messages")
@@ -18,7 +21,7 @@
             @forelse($permissions as $permission)
                 <li class="list-group-item">
                 <h4 class="list-group-item-heading">{{ $permission->display_name }} <small>{{ $permission->name }}</small></h4>
-                    {{ Button::primary('Edit')->asLinkTo(route('pvadmin.permissions.edit', ['id' => $permission->id])) }}
+                    {{ Button::primary('Edit')->asLinkTo(route('pvadmin.permissions.show', ['id' => $permission->id])) }}
                     {{ Form::inline([
                         'route' => ['pvadmin.permissions.destroy', $permission->id],
                         'class' => 'form-button form-button-delete',

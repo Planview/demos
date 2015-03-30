@@ -87,24 +87,6 @@ class PermissionsController extends \BaseController {
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $permission = Permission::findOrFail($id);
-
-        return View::make('pvadmin.permissions.form')
-            ->with('title', 'Edit Permission: ' . $permission->display_name)
-            ->with('action', ['pvadmin.permissions.update', $permission->id])
-            ->with('method', 'put')
-            ->with('roles', Role::optionsList())
-            ->with('permission', $permission);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  int  $id

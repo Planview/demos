@@ -2,24 +2,18 @@
 
 namespace pvadmin;
 
-use App;
-use Config;
 use Input;
+use Redirect;
+use View;
+
+use Auth;
+use Config;
+use Isr;
 use Lang;
 use Mail;
-use Response;
-use Redirect;
-use Session;
-use View;
-use URL;
-
-Use Isr;
-//use Permission;
+use Permission;
 use Role;
 use User;
-//use UserRepository;
-
-
 
 class UsersController extends \BaseController {
 
@@ -30,8 +24,16 @@ class UsersController extends \BaseController {
      */
     public function index()
     {
-        $users = User::orderBy('email', 'asc')->paginate(5);
-        
+        $user = User::findOrFail(Auth::id());
+
+        if ($user->can('manage_admins')) {
+            $users = User::usersWithPermission('manage_clients');
+        } else if ($user->can('manage_isrs')) {
+            $users = User::usersWithPermission('manage_clients');
+        }
+
+        // $users = User::usersWithPermission('manage_clients');
+
         return View::make("pvadmin.users.index")->with(array("users"=>$users));
     }
 
@@ -42,14 +44,16 @@ class UsersController extends \BaseController {
      */
     public function create()
     {
-        $isr = new Isr();
+        $isrs  = User::isrList();
         $roles = Role::optionsList();
-        $user = new User();
+        $user  = new User();
+        $isr   = $user->isrInfo();
 
         return View::make('pvadmin.users.form')->with([
             'title'     => 'Create a New User',
             'action'    => 'pvadmin.users.store',
-            'isr'     => $isr,
+            'isr'       => $isr,
+            'isrs'      => $isrs,
             'user'      => $user,
             'roles'     => $roles,
             'method'    => 'post'
@@ -66,11 +70,11 @@ class UsersController extends \BaseController {
         $password = '';
 
         $user = new User();
-        $isr = new Isr();
+        $isr_info_array = array();
 
-        $user->email    = Input::get('email');
+        $user->email      = Input::get('email');
         $user->company    = Input::get('company');
-        $user->expiration    = Input::get('expiration');
+        $user->expires    = Input::get('expires');
         $user->confirmation_code = md5(uniqid(mt_rand(), true));
 
         if (Input::get('auto_password', false)) {
@@ -85,31 +89,18 @@ class UsersController extends \BaseController {
                 $user->roles()->sync(Input::get('roles'));
             }
 
+            // isr input
             if (Input::has('isr_first_name')) {
-                $isr->user_id    = $user->id;
-                $isr->isr_first_name = Input::get('isr_first_name');
-                if (Input::has('isr_last_name')) {
-                    $isr->isr_last_name = Input::get('isr_last_name');
-                }
-                if (Input::has('isr_phone')) {
-                    $isr->isr_phone = Input::get('isr_phone');
-                }
-                if (Input::has('isr_mobile_phone')) {
-                    $isr->isr_mobile_phone = Input::get('isr_mobile_phone');
-                }
-                if (Input::has('isr_location')) {
-                    $isr->isr_location = Input::get('isr_location');
-                }
-                if (!$isr->save()) {
-                    $error = $isr->errors()->all(':message');
+                $isr = new Isr(Input::all());
+                if (!$user->isrs()->save($isr)) {
+                    $error = $user->errors()->all(':message');
 
                     return Redirect::route('pvadmin.users.create')
                         ->withInput(Input::except('password'))
                         ->withError('There was a problem with your submission. See below for more information.')
-                        ->withErrors($isr->errors());
+                        ->withErrors($user->errors());
                 }
             }
-
 /*
             if (Input::get('auto_password', false)) {
                 $user->confirm();
@@ -125,7 +116,7 @@ class UsersController extends \BaseController {
                 Mail::send(
                     Config::get('confide::email_account_confirmation'),
                     compact('user'),
-                    function ($message) use ($user) {
+                function ($message) use ($user) {
                         $message
                             ->to($user->email, $user->email)
                             ->subject(Lang::get('confide::confide.email.account_confirmation.subject'));
@@ -154,42 +145,10 @@ class UsersController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
-    //public function show($user)
+    public function show($user)
     {
-        if (!($isr = Isr::where('user_id', '=', $id)->first())) {
-            $isr = new Isr();
-        }
-
         $roles = Role::optionsList();
-        $user = User::findOrFail($id);
-
-        return View::make('pvadmin.users.form')->with([
-            'title'     => "Update User: {$user->email}",
-            'action'    => ['pvadmin.users.update', $user->id],
-            'isr'       => $isr,
-            'roles'     => $roles,
-            'user'      => $user,
-            'method'    => 'put'
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    //public function edit($user)
-    {
-        // if (!($isr = Isr::where('user_id', '=', $id)->first())) {
-        //     $isr = new Isr();
-        // }
-        $isr = Isr::where('user_id', '=', $id)->first() ?: new Isr();
-
-        $roles = Role::optionsList();
-        $user = User::findOrFail($id);
+        $isr   = $user->isrInfo();
 
         return View::make('pvadmin.users.form')->with([
             'title'     => "Update User: {$user->email}",
@@ -207,60 +166,37 @@ class UsersController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
-    //public function update($user)
+    public function update($user)
     {
         // user input
-        $user = User::findOrFail($id);
-
         if (Input::has('password')) {
-            if (Input::get('password') === Input::get('password_confirmation')) {
-                $user->password = Input::get('password');
-            } else {
-                return Redirect::route('pvadmin.users.show', $user->id)
-                    ->withInput(Input::except('password'))
-                    ->withError('Error: Passwords do not match.');
-            }
+            $user->password = Input::get('password');
+            $user->password_confirmation = Input::get('password_confirmation');
         }
 
         if (Input::has('roles')) {
             $user->roles()->sync(Input::get('roles'));
         }
 
-        // isr input
-        if (!($isr = Isr::where('user_id', '=', $id)->first())) {
-            $isr = new Isr();
-            $isr->user_id = $id;
-        }
-
-        if (Input::has('isr_first_name')) {
-            $isr->isr_first_name = Input::get('isr_first_name');
-        }
-        if (Input::has('isr_last_name')) {
-            $isr->isr_last_name = Input::get('isr_last_name');
-        }
-        if (Input::has('isr_phone')) {
-            $isr->isr_phone = Input::get('isr_phone');
-        }
-        if (Input::has('isr_mobile_phone')) {
-            $isr->isr_mobile_phone = Input::get('isr_mobile_phone');
-        }
-        if (Input::has('isr_location')) {
-            $isr->isr_location = Input::get('isr_location');
-        }
-
         $resultUser = $user->save();
-        $resultIsr = $isr->save();
+
+        // isr input
+        if ($user->isrs->isEmpty()) {
+            $isr = new Isr(Input::all());
+            $resultIsr = $user->isrs()->save($isr);
+        } else {
+            $resultIsr = $user->isrs()->first()->fill(Input::all())->save();
+        }
 
         if ($resultUser) {
             if ($resultIsr) {
                 return Redirect::route('pvadmin.users.show', $user->id)
-                    ->withMessage('The user has been updated.');
+                    ->withMessage('This user was updated.');
             } else {
                 return Redirect::route('pvadmin.users.show', $user->id)
                     ->withInput(Input::except('password'))
                     ->withError('There was a problem with your submission. See below for more information.')
-                    ->withErrors($isr->errors());
+                    ->withErrors($user->errors());
             }
         } else {
             return Redirect::route('pvadmin.users.show', $user->id)
@@ -276,13 +212,18 @@ class UsersController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($user)
     {
-        $user = User::findOrFail($id);
-        $message = 'User Expired: '.$user->email;
-        $result = $user->delete();
+        $message = 'User deleted: '.$user->email;
 
-        if ($result) {
+        // delete ISR info first
+        $resultIsr  = true;
+        if (!$user->isrs->isEmpty()) {
+            $resultIsr  = $user->isrs()->delete();
+        }
+        $resultUser = $user->delete();
+
+        if ($resultIsr && $resultUser) {
             return Redirect::route('pvadmin.users.index')
                 ->withMessage($message);
         } else {
@@ -290,6 +231,5 @@ class UsersController extends \BaseController {
                 ->withError('There was a problem with your submission. See below for more information.')
                 ->withErrors($user->errors());
         }
-
     }
 }

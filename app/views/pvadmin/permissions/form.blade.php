@@ -1,4 +1,7 @@
-@extends("master.layout-admin")
+<?php
+    $body_class = "admin";
+?>
+@extends("master.layout")
 
 @section("title")
     {{ $title }}

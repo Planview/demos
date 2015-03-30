@@ -1,7 +1,10 @@
-@extends("master.layout-admin")
+<?php
+    $body_class = "admin";
+?>
+@extends("master.layout")
 
 @section("title")
-    Roles
+    Manage Roles
 @stop
 
 @section("page_messages")
@@ -18,7 +21,7 @@
             @forelse($roles as $role)
                 <li class="list-group-item">
                 <h4 class="list-group-item-heading">{{ $role->name }}</h4>
-                    {{ Button::primary('Edit')->asLinkTo(route('pvadmin.roles.edit', ['id' => $role->id])) }}
+                    {{ Button::primary('Edit')->asLinkTo(route('pvadmin.roles.show', ['id' => $role->id])) }}
                     {{ Form::inline([
                         'route' => ['pvadmin.roles.destroy', $role->id],
                         'class' => 'form-button form-button-delete',

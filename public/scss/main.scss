@@ -1,15 +1,410 @@
 @import "variables";
 
+// bower:scss
 @import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap";
+// fontawesome:scss
+@import "../bower_components/fontawesome/scss/font-awesome";
+
+// SmartMenus jQuery Bootstrap Addon CSS
+// http://vadikom.github.io/smartmenus/src/demo/index.html
+@import "jquery.smartmenus.bootstrap.scss";
+
+//*************************************************************************/
+$planview-lilac: #ba8aa4;
+@mixin nav-top-default {
+  background-position:8px 2px; //8px 3px;
+  background-repeat:no-repeat;
+  border-bottom:7px solid #FFF;
+  color: #999;
+  font-size:14px; //13px;
+  font-weight:bold;
+  //line-height:25px; //25px;
+  //max-height:32px;
+  height:33px;
+  min-width:100px;
+  //padding:0px 0px 7px 30px;
+  padding:0px 0px 0px 30px;
+}
+//*************************************************************************/
+
+//.col-sm-4 { border:1px solid #FF0000; }
+//.col-sm-8 { border:1px solid #00FF00; }
+//.row { border:1px solid #FF0000; }
 
 body {
-	margin:1em 2em 2em 2em;
+  background-color: #ebebeb;
+  margin:0 20px 20px 20px;
+  @media screen and (max-width: 450px) {
+    margin:0;
+  }
 }
-section#page-body {
-	max-width:1000px;
-	margin-left:auto !important;
-	margin-right:auto !important;
+#site-wrapper {
+  background-color: #FFF;
+  margin:auto;
+  max-width: 1057px;
+  min-width: 320px;
+  padding:0em;
+  width: 100%;
+  @media screen and (max-width: 450px) {
+    margin:0;
+  }
 }
+header {
+  &#site-header {
+    min-height:108px;
+    height:100%;
+    width:100%;
+  }
+  .site-title {
+    background: {
+      size: contain;
+      image: url('/img/logo-planview-enterprise-product-demos-318x108.png');
+      repeat: no-repeat;
+      position: center center;
+    }
+    width: 318px;
+    height: 108px;
+    @include text-hide();
+    h1 {
+      margin:0;
+      padding:0;
+    }
+  }
+  .site-title-planview {
+    background: {
+      size: contain;
+      image: url('/img/planview-logo-color.png');
+      repeat: no-repeat;
+      position: center center;
+    }
+    width: 170px;
+    height: 40px;
+    @include text-hide();
+    @media screen and (max-width: $screen-xs-max) {
+      margin: 10px auto;
+    }
+    @media screen and (min-width: $screen-sm-min) {
+      margin: 18px 17px 17px 0px;
+    }
+    h1 {
+      margin:0;
+      padding:0;
+    }
+  }
+
+  //* top nav links */
+  nav.site-nav {
+    @media screen and (max-width: $screen-xs-max) {
+      ul.dropdown-menu {
+        // display:none;
+      }
+      .collapse {
+        display:block;
+      }
+      .navbar-nav .sub-arrow, .navbar-nav .collapsible .sub-arrow {
+        border-width:0px;
+      }
+    }
+    ul.nav {
+      min-width: 400px;
+      padding-left:0px;
+      @media screen and (max-width: 450px) {
+        min-width: 0;
+      }
+      @media screen and (max-width: $screen-xs-max) { //768px
+        margin: 10px auto;
+        a.navbar-nav-link-top {
+          max-width:200px;
+          margin-left:25px;
+        }
+      }
+      a#topnav-home {
+        @include nav-top-default;
+        background-image:url('/img/icon-home-20x16.png');
+        &:hover {
+          background-color:#FFF;
+          border-bottom-color:$planview-lilac;
+        }
+      }
+      a#topnav-demos {
+        @include nav-top-default;
+        background-image:url('/img/icon-demos-20x16.png');
+        &:hover {
+          background-color:#FFF;
+          border-bottom-color:$planview-lilac;
+        }
+      }
+      a#topnav-logout {
+        @include nav-top-default;
+        background-image:url('/img/icon-logout-20x16.png');
+        &:hover {
+          background-color:#FFF;
+          border-bottom-color:$planview-lilac;
+        }
+      }
+      a#topnav-admin {
+        @include nav-top-default;
+        background-image:url('/img/icon-admin-area-20x16.png');
+        &:hover {
+          background-color:#FFF;
+          border-bottom-color:$planview-lilac;
+        }
+      }
+      li.open a#topnav-admin {
+        background-color:#FFF;
+        border-bottom-color:$planview-lilac;
+      }
+    }
+  }
+  //* social media links */
+  .follow-links {
+    min-width:180px;
+    text-align: center;
+    @media screen and (min-width: $screen-sm-min) {
+      float: right;
+    }
+    ul.list-inline {
+      margin-bottom:0;
+    }
+  }
+}
+//* style the top nav link for the current page */
+.home a#topnav-home,
+.demo a#topnav-demos,
+.demos a#topnav-demos,
+.admin a#topnav-admin {
+  border-bottom-color:$planview-lilac !important;
+}
+
+#content-topper {
+  margin-top: 0px;
+  width: 100%;
+  height: 15px;
+  background-image: url('/img/bg-top-nav-bottom-1037x15.png');
+  background-position: top left;
+  background-repeat: repeat;
+}
+
 main {
-	margin-bottom:2em;
+  //* main general styles */
+  padding:0 4em 2em 4em;
+  @media screen and (max-width: 450px) {
+    padding:0 1em 1em 1em;
+  }
+  h1 {
+    color: #546799;
+    font: {
+      size: 24px;
+      weight: bold;
+    }
+  }
+  h2 {
+    color:#5381ac;
+    margin: 1em 0em 1em 0em;
+    font: {
+      size: 18px;
+      weight: bold;
+    }
+  }
+  ul li {
+    margin-left: 0px;
+    list-style-image: url('/img/bullet-arrow-8x10.png');
+    margin-bottom: .15em;
+  }
+  div.right-sidebar {
+    width:100%;
+    h2 {
+      color:#000;
+      font: {
+        size:20px;
+        weight:bold;
+      }
+      margin:0px 0px 10px -5px;
+      padding:4px 0px 0px 25px;
+      &#header-contact {
+        background-image:url('/img/icon-phone-contact-25x25.png');
+        background-position:0px 2px;
+        background-repeat:no-repeat;
+      }
+    }
+    .module-contact-info {
+      background-color:#d4e8f7;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      max-width: 250px;
+      padding:10px 20px;
+      text-align:left;
+      a.email-link { white-space: nowrap; }
+    }
+    .module-related-content {
+      text-align:left;
+      margin:20px 0px 20px -20px;
+      h2 { font-size:16px; }
+    }
+  }
+  .form-button {
+    display: inline;
+  }
+
+  //* page-specific styles */
+
+  //* home (public) */
+  .panel-default {
+    background-color:#dcdcdc;
+    margin-top:20px;
+    padding:20px 20px 10px 20px;
+    @media screen and (max-width: $screen-sm-max) {
+      padding:0;
+    }
+    @media screen and (max-width: $screen-xs-max) {
+      margin-top:5px;
+    }
+    // button {
+    //   background-color:#aab300;
+    //   border-width:0;
+    //   &:hover {
+    //     background-color:#aab300;
+    //     color:#FFF;
+    //   }
+    // }
+    .error-message {
+      color:#FF0000;
+      //font-size: 90%;
+      font-weight:bold;
+    }
+  }
+
+  //* demos page (demo list) */
+  a.demo-link {
+    font-weight: bold;
+  }
+  ul.product-demo-list {
+    clear:left;
+    li {
+      margin-bottom: 1em;
+    }
+  }
+  div.demo-description {
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    margin: 0.5em 0px 0px 0px;
+    padding: 5px 10px 8px 10px;
+    overflow:hidden;
+    li {
+      margin-bottom: .15em;
+    }
+  }
+
+  //* demo page (individual demos) */
+  div.limelight-video-respond {
+    margin-bottom:1em;
+  }
+
+  //* admin user page styles */
+  div.admin-bg {
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 20px 20px 20px;
+    label {
+      font-weight:normal;
+    }
+    div.row-cell {
+      min-height:40px;
+    }
+  }
 }
+
+//* footer styles */
+footer {
+  &#site-footer {
+    background-color:#5381ac;
+    color:#FFF;
+    padding:1em 2em 1em 0;
+    text-align:right;
+  }
+}
+
+label {
+  color:$brand-primary;
+  font-weight: normal;
+}
+
+//*************************************************************************/
+//* page-specific styles */
+//* home */
+.home {
+  main {
+    min-height:400px;
+    @media screen and (max-width: $screen-sm-max) {
+      min-height:0;
+    }
+  }
+  .right-sidebar {
+    text-align: center;
+  }
+  .module-contact-info {
+    margin: auto;
+    margin-top:20px;
+  }
+}
+//* demos page (demo list) */
+.demos {
+  main {
+    h1 {
+      float:left;
+    }
+    p.demo-list-instructions {
+      clear:left;
+      float:left;
+    }
+    .right-sidebar {
+      float:right;
+      margin: 0 0 10px 20px;
+      max-width: 250px;
+    }
+  }
+}
+//* individual demo pages */
+.demo {
+  h1#page-title {
+    margin-bottom: 30px;
+    margin-top: 0;
+    @media screen and (max-width: 450px) {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+  p.back-to-demos {
+    margin-top: 20px;
+    @media screen and (max-width: 450px) {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+  div.right-sidebar {
+    margin-left: 30px;
+    max-width: 250px;
+    @media screen and (max-width: $screen-sm-max) {
+      max-width: 100%;
+    }
+  }
+}
+//* admin pages */
+.admin {
+
+}
+
+// old code for laravel development
+// body {
+//     margin:1em 2em 2em 2em;
+// }
+// section#page-body {
+//     max-width:1000px;
+//     margin-left:auto !important;
+//     margin-right:auto !important;
+// }
+// main {
+//     margin-bottom:2em; 
+// }

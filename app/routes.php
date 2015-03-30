@@ -13,65 +13,10 @@
 
 Route::get('/', function()
 {
-    //$view = View::make('greeting')->with('name', 'Scotty Scott');
-	//$view = View::make('greeting')->withName('Scotty Viper');
-	//$view = View::make('greeting')->nest('child', 'child.view');
-    $data = array(
-        'heading' => 'You know what?',
-        'body' => 'This is totally awesome!',
-		'first_name' => 'Scotty',
-		'last_name' => 'Scott'
-    );
-    //return View::make('greeting', $data);
-	//return View::make('greeting')->nest('child', 'child.view', $data)->with('first_name', 'Scotty')->with('last_name', 'Scott');
-	return View::make('greeting')->nest('child', 'child.view', $data)->with($data);
-});
-
-Route::get('/mockup', function()
-{
-    return View::make('mockup');
+    return View::make('home');
 });
 
 Route::resource('demos', 'DemosController', ['only' => ['index', 'show']]);
-
-/*
-Route::get('/{page}', function ($page) {
-	return View::make('page')->with(['page' => $page]);
-});
-*/
-
-/////////////////////////////////////////////////////////////
-/*
-Route::get('users', function()
-{
-    return 'Users!';
-});
-
-Route::get('users', 'UserController@getIndex');
-
-Route::get('users', function()
-{
-    return View::make('users');
-});
-*/
-
-Route::resource('users', 'UsersController');
-
-/*
-Route::get('users', function()
-{
-    $users = User::all();
-
-    return View::make('users')->with('users', $users);
-});
-*/
-
-/*
-// print sql query
-Event::listen('laravel.query'), function($sql) {
-    var_dump($sql);
-}
-*/
 
 Route::group(['prefix' => 'pvadmin', 'namespace' => 'pvadmin'], function()
 {
@@ -91,6 +36,39 @@ Route::get('users/forgot_password', 'UsersController@forgotPassword');
 Route::post('users/forgot_password', 'UsersController@doForgotPassword');
 Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
 Route::post('users/reset_password', 'UsersController@doResetPassword');
-Route::get('users/logout', 'UsersController@logout');
+// Route::get('users/logout', 'UsersController@logout');
 
+Route::get('logout', 'UsersController@logout');
 Route::get('users', 'UsersController@index');
+
+Route::resource('users', 'UsersController');
+
+// Route model binding
+Route::model('users', 'User');
+// Route::model('roles', 'Role');
+// Route::model('permissions', 'Permission');
+
+// Route::group(['prefix' => 'auth'], function ()
+// {
+//     // Get Requests
+//     Route::get('login', ['as' => 'auth.login', 'uses' => 'UsersController@login']);
+//     Route::get('confirm/{code}', ['as' => 'auth.confirm', 'uses' => 'UsersController@confirm']);
+//     Route::get('forgot_password', ['as' => 'auth.forgotPassword', 'uses' => 'UsersController@forgotPassword']);
+//     Route::get('change_password', ['as' => 'auth.changePassword', 'uses' => 'UsersController@changePassword', 'before' => 'auth']);
+//     Route::get('reset_password/{token}', ['as' => 'auth.resetPassword', 'uses' => 'UsersController@resetPassword']);
+//     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'UsersController@logout']);
+
+//     // Form Posts
+//     Route::group(['before' => 'csrf'], function ()
+//     {
+//         Route::post('login', ['as' => 'auth.doLogin', 'uses' => 'UsersController@doLogin']);
+//         Route::post('forgot_password', ['as' => 'auth.doForgotPassword', 'uses' => 'UsersController@doForgotPassword']);
+//         Route::post('change_password', ['as' => 'auth.doChangePassword', 'uses' => 'UsersController@doChangePassword', 'before' => 'auth']);
+//         Route::post('reset_password', ['as' => 'auth.doResetPassword', 'uses' => 'UsersController@doResetPassword']);
+//     });
+// });
+
+// print sql query
+// Event::listen('laravel.query'), function($sql) {
+//     var_dump($sql);
+// }

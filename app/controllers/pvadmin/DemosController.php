@@ -2,12 +2,11 @@
 
 namespace pvadmin;
 
-use Demo;
 use Input;
 use Redirect;
-use Session;
 use View;
-use URL;
+
+use Demo;
 
 class DemosController extends \BaseController {
 
@@ -52,9 +51,12 @@ class DemosController extends \BaseController {
         $demo->description          = Input::get('description');
         $demo->enterprise_version   = Input::get('enterprise_version');
         $demo->language             = Input::get('language');
-        $demo->demo_code            = Input::get('demo_code');
-        $demo->related_content_code = Input::get('related_content_code');
-
+        // $demo->demo_code            = Input::get('demo_code');
+        $demo->demo_code = HTML::entities(Input::get('demo_code'));
+        // $demo->related_content_code = Input::get('related_content_code');
+        // $demo->related_content_code = HTML::entities(Input::get('related_content_code'));
+        $demo->related_content_code = e(Input::get('related_content_code'));
+        
         if ($demo->save()) {
             return Redirect::action('pvadmin.demos.show', $demo->id)
                 ->with('message', "{$demo->title} was successfully created.");
@@ -75,24 +77,6 @@ class DemosController extends \BaseController {
      * @return Response
      */
     public function show($id)
-    {
-        $demo = Demo::withTrashed()->findOrFail($id);
-
-        return View::make('pvadmin.demos.form')->with([
-            'title'     => "Update Demo: {$demo->title}",
-            'action'    => ['pvadmin.demos.update', $demo->id],
-            'demo'       => $demo,
-            'method'    => 'put'
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
     {
         $demo = Demo::withTrashed()->findOrFail($id);
 
