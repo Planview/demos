@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder {
             $company = null;
             $expires = null;
             $isr_contact_id = null;
-            if ($index > 10) {
+            if ($index > 5) {
                 date_add($date,date_interval_create_from_date_string("15 days"));
                 $company = $faker->company;
                 $expires = date_format($date,"Y-m-d");
