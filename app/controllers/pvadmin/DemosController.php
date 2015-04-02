@@ -51,11 +51,9 @@ class DemosController extends \BaseController {
         $demo->description          = Input::get('description');
         $demo->enterprise_version   = Input::get('enterprise_version');
         $demo->language             = Input::get('language');
-        // $demo->demo_code            = Input::get('demo_code');
-        $demo->demo_code = HTML::entities(Input::get('demo_code'));
-        // $demo->related_content_code = Input::get('related_content_code');
-        // $demo->related_content_code = HTML::entities(Input::get('related_content_code'));
-        $demo->related_content_code = e(Input::get('related_content_code'));
+        // $demo->demo_code            = e(Input::get('demo_code'));
+        $demo->demo_code            = Input::get('demo_code');
+        $demo->related_content_code = Input::get('related_content_code');
         
         if ($demo->save()) {
             return Redirect::action('pvadmin.demos.show', $demo->id)
@@ -83,7 +81,7 @@ class DemosController extends \BaseController {
         return View::make('pvadmin.demos.form')->with([
             'title'     => "Update Demo: {$demo->title}",
             'action'    => ['pvadmin.demos.update', $demo->id],
-            'demo'       => $demo,
+            'demo'      => $demo,
             'method'    => 'put'
         ]);
     }

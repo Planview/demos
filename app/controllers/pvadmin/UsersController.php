@@ -12,6 +12,7 @@ use Isr;
 use Lang;
 use Mail;
 use Permission;
+use Request;
 use Role;
 use User;
 
@@ -24,30 +25,45 @@ class UsersController extends \BaseController {
      */
     public function index()
     {
-        $user = User::findOrFail(Auth::id());
+        $user           = User::findOrFail(Auth::id());
+        $title          = 'Manage Admin Users';
 
-        if ($user->can('manage_admins')) {
-            $users = User::usersWithPermission('manage_clients');
-        } else if ($user->can('manage_isrs')) {
-            $users = User::usersWithPermission('manage_clients');
+        if (isset($_GET["userByEmail"])) {
+            $thisUser = User::where('email', '=', $_GET["userByEmail"])->firstOrFail();
+            return Redirect::action('pvadmin.users.show', $thisUser->id);
+        } else if (isset($_GET["allUsers"])) {
+            $title          = 'Manage All Users';
+
+            if ($user->can('manage_admins')) {
+                $users = User::orderBy('email', 'asc')->get();
+            } else if ($user->can('manage_isrs')) {
+                $users = User::usersWithoutPermission('manage_isrs');
+            }
+        } else {
+            if ($user->can('manage_admins')) {
+                $users = User::usersWithPermission('manage_clients');
+            } else if ($user->can('manage_isrs')) {
+                $users = User::usersWithAbility('ISR Admin', 'manage_clients');
+            }
         }
 
-        // $users = User::usersWithPermission('manage_clients');
-
-        return View::make("pvadmin.users.index")->with(array("users"=>$users));
+        return View::make('pvadmin.users.index')->with([
+            'title'         => $title,
+            'users'         => $users
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new user.
      *
      * @return Response
      */
     public function create()
     {
-        $isrs  = User::isrList();
-        $roles = Role::optionsList();
-        $user  = new User();
-        $isr   = $user->isrInfo();
+        $isrs   = User::isrList();
+        $roles  = Role::optionsList();
+        $user   = new User();
+        $isr    = $user->isrInfo();
 
         return View::make('pvadmin.users.form')->with([
             'title'     => 'Create a New User',

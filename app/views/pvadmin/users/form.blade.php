@@ -4,7 +4,7 @@
 @extends("master.layout")
 
 @section("title")
-    {{ $title }}
+    {{{ $title }}}
 @stop
 
 @section("styles")
@@ -20,7 +20,7 @@
 
 @section("content")
     <header class="page-header">
-        <h1>{{ $title }}</h1>
+        <h1>{{{ $title }}}</h1>
     </header>
     <article>
     {{ Form::horizontal(['route' => $action, 'class' => 'row', 'method' => $method]) }}
@@ -125,13 +125,11 @@
         </div>
     {{ Form::close() }}
 
-<br><br>ISR:
 <?php
-    var_dump($user->isrs());
-?>
-<br><br>USER:
-<?php
-    var_dump($user);
+    // echo "<br><br>ISR:";
+    // var_dump($user->isrs());
+    // echo "<br><br>USER:";
+    // var_dump($user);
 ?>
 
     </article>

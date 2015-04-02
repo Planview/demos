@@ -51,7 +51,7 @@
                     3
                 ) }}
                 {{ ControlGroup::generate(
-                    Form::label('password_help', 'Generate Password'),
+                    Form::label('generate_password', 'Generate Password'),
                     Button::success('Generate a New Password')->withAttributes(['id' =>'generate_password']),
                     Button::primary('Clear Password Field')->withAttributes(['id' =>'clear_password']),
                     3
@@ -69,9 +69,15 @@
                 null,
                 3
             ) }}
+            {{-- ControlGroup::generate(
+                Form::label('isr_contact_id', 'ISR'),
+                Form::select('isr_contact_id', Input::old('isr_contact_id', $isrs), $user->isr_contact_id ?: Auth::id(), ['required']) . $errors->first('isr_contact_id', '<span class="label label-danger">:message</span>'),
+                null,
+                3
+            ) --}}
             {{ ControlGroup::generate(
                 Form::label('isr_contact_id', 'ISR'),
-                Form::select('isr_contact_id', Input::old('isr_contact_id', $isrs), $user->isr_contact_id, ['required']) . $errors->first('isr_contact_id', '<span class="label label-danger">:message</span>'),
+                Form::select('isr_contact_id', $isrs, $user->isr_contact_id ?: Auth::id(), ['required']) . $errors->first('isr_contact_id', '<span class="label label-danger">:message</span>'),
                 null,
                 3
             ) }}
@@ -88,9 +94,17 @@
                     @if (($demo->language != $previous_language) || ($demo->enterprise_version != $previous_enterprise_version))
                         {{ '<h3>'.$demo->language.' - PVE '.$demo->enterprise_version.'</h3>' }}
                     @endif
-                    <?php 
-                        in_array($demo->id, $user_demo_access) ? $checked = true : $checked = false;
-                    ?>
+                    @if (null === $user->id)
+                        <?php $checked = false; ?>
+                    @else
+                        <?php 
+                            if (is_array($user_demo_access)) {
+                                in_array($demo->id, $user_demo_access) ? $checked = true : $checked = false;
+                            } else {
+                                $checked = false;
+                            }
+                        ?>
+                    @endif
                     {{ Form::checkbox('demo-access[]', $demo->id, $checked, array('class' => 'demo-access', 'id' => 'demo-'.$demo->id)) }} {{ Form::label('demo-'.$demo->id, $demo->title) }}<br />
                     <?php 
                         $previous_language =  $demo->language;
@@ -112,6 +126,7 @@
             </div>
         </div>
     {{ Form::close() }}
+{{--
     <div class="row">
         <div class="col-sm-6">
         <fieldset>
@@ -162,6 +177,7 @@
         </fieldset>
         </div>
     </div>
+--}}
 @stop
 
 @section("scripts")

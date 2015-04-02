@@ -4,7 +4,7 @@
 @extends("master.layout")
 
 @section("title")
-    Manage Users
+    {{{ $title }}}
 @stop
 
 @section("page_messages")
@@ -14,7 +14,7 @@
 @section("content")
     <header class="page-header">
         <a href="{{ URL::route('pvadmin.users.create') }}" class="btn btn-success pull-right"><span class="fa fa-plus"></span> Add New User</a>
-        <h1>Manage Users</h1>
+        <h1>{{{ $title }}}</h1>
     </header>
     {{-- $users->links() --}}
     <article>
@@ -36,9 +36,9 @@
             @endforelse
         </ul>
 
-<br><br>USERS:
 <?php
-    var_dump($users);
+    // echo "<br><br>USERS:";
+    // var_dump($users);
 ?>
 
     </article>

@@ -45,6 +45,7 @@
                         <ul class="dropdown-menu">
                             @section('nav_menu_admin')
                                 <li>{{HTML::link('/pvadmin/users', 'Admin Users', array('id' => 'topnav-admin-users'));}}</li>
+                                <li>{{HTML::link('/pvadmin/users?allUsers=true', 'All Users', array('id' => 'topnav-admin-users'));}}</li>
                                 @if ($user->can('manage_admins'))
                                     <li>{{HTML::link('/pvadmin/demos', 'All Demos', array('id' => 'topnav-admin-demos'));}}</li>
                                     <li>{{HTML::link('/pvadmin/roles', 'Roles', array('id' => 'topnav-admin-roles'));}}</li>

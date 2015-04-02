@@ -9,9 +9,7 @@ class DemosController extends \BaseController {
      */
     public function index()
     {
-        // $demos = Demo::orderBy('title', 'asc')->paginate(5);
-        $demos = Demo::orderBy('title', 'asc')->get();
-
+        $demos = Demo::demosUserCanAccess();
         return View::make("demos.index")->with(array("demos"=>$demos));
     }
 

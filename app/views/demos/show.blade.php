@@ -7,10 +7,12 @@
     {{{$demo->title}}}
 @stop
 
-@section("nav_menu_admin")
-    @parent
-    <li>{{HTML::link('/pvadmin/demos/'.$demo->id, 'Edit This Demo', array('id' => 'topnav-admin-view'));}}</li>
-@stop
+@if (User::find(Auth::id())->can('manage_content'))
+    @section("nav_menu_admin")
+        @parent
+        <li>{{HTML::link('/pvadmin/demos/'.$demo->id, 'Edit This Demo', array('id' => 'topnav-admin-view'));}}</li>
+    @stop
+@endif
 
 @section("content")
     <p class="back-to-demos"><a href="/demos" title="Back to Demo List">&laquo; Back to Demo List</a></p>

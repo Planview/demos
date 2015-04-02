@@ -10,9 +10,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('company', 'asc')
-                     ->orderBy('email', 'asc')
-                     ->paginate(20);
+        // $users = User::orderBy('company', 'asc')
+        //              ->orderBy('email', 'asc')
+        //              ->paginate(20);
+
+        $users = User::usersClientsOnly();
 
         return View::make("users.index")->with(array("users"=>$users));
     }
@@ -63,7 +65,21 @@ class UsersController extends Controller
         if ($user->save()) {
             $user->confirm();
             // if ($user_demo_access = UserDemoAccess::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
-            if ($user_demo_access = User::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
+            // if ($user_demo_access = User::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
+            
+            // $demo_access_selections = array();
+            if (Input::get('demo-access')) {
+                // $demo_access_selections = Input::get('demo-access');
+                $user->demos()->sync(Input::get('demo-access'));
+            }
+
+                return Redirect::action('users.index')
+                      ->with('message', "The user {$user->email} was successfully created.<br />Their password is: ".$password."<br />Their expiration date is: {$user->expires}");
+
+
+/*
+            if ($user->demos()->sync($demo_access_selections)) {
+            
             // if ($user_demo_access = $user::updateUserDemoAccess(Input::get('demo-access'))) {
                 // return Redirect::action('users.show', $user->id)
                 return Redirect::action('users.index')
@@ -76,6 +92,7 @@ class UsersController extends Controller
                     ->withError('There was a problem with your submission. The demo access selections did not save.')
                     ->withErrors($user_demo_access->errors());
             }
+*/
 
         } else {
             $error = $user->errors()->all(':message');
@@ -140,7 +157,13 @@ class UsersController extends Controller
         $user->isr_contact_id = Input::get('isr_contact_id');
 
         if ($user->save()) {
-            $user->demos()->sync(Input::get('demo-access'));
+
+            $demo_access_selections = array();
+            if (Input::get('demo-access')) {
+                $demo_access_selections = Input::get('demo-access');
+            }
+
+            $user->demos()->sync($demo_access_selections);
 
             return Redirect::action('users.show', $user->id)
                   ->with('message', "The user {$user->email} was successfully updated.");

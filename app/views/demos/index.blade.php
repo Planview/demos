@@ -27,7 +27,7 @@
         <ul class="product-demo-list">
             @forelse($demos as $demo)
                 @if (!$demo->deleted_at)
-                    <li><a href="{{URL::route("demos.show", $demo->id)}}">{{{$demo->title}}}</a><br /><div class="demo-description">{{{$demo->description}}}</div></li>
+                    <li><a href="{{URL::route("demos.show", $demo->id)}}">{{{$demo->title}}}</a><br /><div class="demo-description">{{$demo->description}}</div></li>
                 @endif
             @empty
                 <li>What, no demos?</li>

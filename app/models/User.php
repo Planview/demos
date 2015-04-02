@@ -32,12 +32,69 @@ class User extends Eloquent implements ConfideUserInterface
         return $roles;
     }
 
+    /**
+     * Create an array of clients (non-admins)
+     * @return User object array
+     */
+    public static function usersClientsOnly()
+    {
+        $list = array();
+
+        foreach (self::orderBy('company', 'asc')->get() as $user) {
+            if (!$user->can('manage_clients')) {
+                $list[] = $user;
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * Create an array of users with specific abilities
+     * @return User object array
+     */
+    public static function usersWithAbility($role, $permission)
+    {
+        $list = array();
+
+        $options = array(
+            'validate_all' => true,
+            'return_type'  => 'boolean'
+        );
+
+        foreach (self::orderBy('email', 'asc')->get() as $user) {
+            if ($user->ability($role, $permission, $options)) {
+                $list[] = $user;
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * Create an array of users with a specific permission
+     * @return User object array
+     */
     public static function usersWithPermission($permission)
     {
         $list = array();
 
         foreach (self::orderBy('email', 'asc')->get() as $user) {
             if ($user->can($permission)) {
+                $list[] = $user;
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * Create an array of users without a specific permission
+     * @return User object array
+     */
+    public static function usersWithoutPermission($permission)
+    {
+        $list = array();
+
+        foreach (self::orderBy('email', 'asc')->get() as $user) {
+            if (!$user->can($permission)) {
                 $list[] = $user;
             }
         }
@@ -70,7 +127,10 @@ class User extends Eloquent implements ConfideUserInterface
         $isrs = DB::table('isrs')->orderBy('isr_last_name', 'asc')->orderBy('isr_first_name', 'asc')->get();
 
         foreach ($isrs as $isr) {
-            $list[$isr->user_id] = $isr->isr_first_name.' '.$isr->isr_last_name;
+            // User::find(Auth::id()->ability('ISR Admin', 'manage_clients')
+            if ((User::find($isr->user_id)->ability('ISR Admin', 'manage_clients')) && ($isr->isr_first_name != '') && ($isr->isr_last_name != '')) {
+                $list[$isr->user_id] = $isr->isr_first_name.' '.$isr->isr_last_name;
+            }
         }
         return $list;
     }
