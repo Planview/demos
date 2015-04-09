@@ -13,25 +13,19 @@
 
 App::before(function($request)
 {
-    //
+    // log the user out if their last_activity_timestamp cookie has expires
+    if ( !isset($_COOKIE['last_activity_timestamp']) && Auth::check() ) {
+        Confide::logout();
+         return Redirect::to('/')->with('message', 'Your session has expired. Please login again.');
+    }
 });
 
 App::after(function($request, $response)
 {
+    // set or renew the logged in session time limit for users 
     $sessionExpirationInMinutes = 60;
     $sessionExpiration = $sessionExpirationInMinutes * 60;
-
-    if(isset($_COOKIE['last_activity_timestamp'])) {
-        // update last activity time stamp
-        setcookie('last_activity_timestamp','Login sessions are limited to '.$sessionExpirationInMinutes.' minutes.', time() + $sessionExpiration, "/"); 
-    } else if ( Auth::check() ) {
-        // logout user
-        header_remove ('Location');
-        header( 'Location: /logout?session_expired=true' );
-    } else {
-        // set cookie 
-        setcookie('last_activity_timestamp','hello world', time() + $sessionExpiration, "/"); 
-    }
+    setcookie('last_activity_timestamp','Login sessions are limited to '.$sessionExpirationInMinutes.' minutes.', time() + $sessionExpiration, "/"); 
 });
 
 /*
