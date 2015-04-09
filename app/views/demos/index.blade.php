@@ -7,6 +7,10 @@
     Planview Product Demos
 @stop
 
+@section("page_messages")
+    @include('pvadmin.partials.flash')
+@stop
+
 @section("content")
     <h1 id="page-title">View Planview Demos</h1>
 
@@ -14,14 +18,7 @@
         <p class="demo-list-instructions">Click on a demo title to access:</p>
 
         <div class="right-sidebar">
-            <div class="module-contact-info">
-                <h2 id="header-contact">Contact</h2>
-                <p><strong>ISR&nbsp;Admin</strong><br />
-                Location: North America<br />
-                Tel: 512-555-1212<br />
-                Mobil: 512-555-1212<br />
-                Email: <a href="mailto:isr-admin@planview.com" title="Email ISR&nbsp;Admin">isr-admin@planview.com</a></p>
-            </div>
+            @include('master.contact-module')
         </div>
 
         <ul class="product-demo-list">

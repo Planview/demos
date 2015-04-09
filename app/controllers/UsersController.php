@@ -197,11 +197,24 @@ class UsersController extends Controller
      */
     public function doLogin()
     {
-        $repo = App::make('UserRepository');
-        $input = Input::all();
+        $repo   = App::make('UserRepository');
+        $input  = Input::all();
+        $today  = date("Y-m-d");
 
         if ($repo->login($input)) {
-            return Redirect::intended('/');
+            // login all admins and
+            // ensure user's expiration hasn't expired
+            if (Auth::user()->can('manage_clients')) {
+                // login all admins
+                return Redirect::intended('/');
+            } else if ((Auth::user()->expires) > $today) {
+                // user's expiration hasn't expired
+                return Redirect::intended('/');
+            } else {
+                // user's expiration has expired 
+                Confide::logout();
+                return Redirect::to('/')->with('message', "Your login has expired.");;
+            }
         } else {
             if ($repo->isThrottled($input)) {
                 $err_msg = Lang::get('confide::confide.alerts.too_many_attempts');

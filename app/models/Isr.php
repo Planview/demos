@@ -17,6 +17,30 @@ class Isr extends Eloquent
         return $list;
     }
 
+    /**
+     * @return object of user's associated ISR
+     */
+    public static function associatedIsrInfo($isrId)
+    {
+        if (!($isr = DB::table('isrs')->where('user_id', '=', $isrId)->first())) {
+            $isr = false;
+        }
+        return $isr;
+    }
+
+    /**
+     * @return string of user's associated ISR's email address
+     */
+    public static function associatedIsrEmail($isrId)
+    {
+        if (!($isr = User::findOrFail($isrId))) {
+            $isrEmail = false;
+        } else {
+            $isrEmail = $isr->email;
+        }
+        return $isrEmail;
+    }
+
     public function user()
     {
         // isr_user

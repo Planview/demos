@@ -36,5 +36,20 @@ class Demo extends Eloquent {
         }
     }
 
+    /**
+     * Make a list of the user's demo access
+     * @return Demo ID array
+     */
+    public static function demoIdsUserCanAccess()
+    {
+        $list   = array();
+
+        $demoIds = DB::table('user_demo_access')->where('user_id', '=', Auth::id())->get();
+        foreach ($demoIds as $demoId) {
+            $list [] = $demoId->demo_id;
+        }
+
+        return $list;
+    }
 
 }

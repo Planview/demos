@@ -38,15 +38,14 @@
                 <li><a href="/" id="topnav-home" class="navbar-nav-link-top">Home</a></li>
                 <li><a href="/demos" id="topnav-demos" class="navbar-nav-link-top">Demos</a></li>
                 @if (Auth::check())
-                    <?php $user = User::find(Auth::id()); ?>
                     <li><a href="/logout" id="topnav-logout" class="navbar-nav-link-top">Logout</a></li>
-                    @if ($user->can('manage_isrs'))
+                    @if (Auth::user()->can('manage_isrs'))
                         <li><a href="/users" id="topnav-admin" class="navbar-nav-link-top">Admin</a>
                         <ul class="dropdown-menu">
                             @section('nav_menu_admin')
                                 <li>{{HTML::link('/pvadmin/users', 'Admin Users', array('id' => 'topnav-admin-users'));}}</li>
                                 <li>{{HTML::link('/pvadmin/users?allUsers=true', 'All Users', array('id' => 'topnav-admin-users'));}}</li>
-                                @if ($user->can('manage_admins'))
+                                @if (Auth::user()->can('manage_admins'))
                                     <li>{{HTML::link('/pvadmin/demos', 'All Demos', array('id' => 'topnav-admin-demos'));}}</li>
                                     <li>{{HTML::link('/pvadmin/roles', 'Roles', array('id' => 'topnav-admin-roles'));}}</li>
                                     <li>{{HTML::link('/pvadmin/permissions', 'Permissions', array('id' => 'topnav-admin-permissions'));}}</li>
@@ -54,7 +53,7 @@
                             @show
                         </ul>
                         </li>
-                    @elseif ($user->can('manage_clients'))
+                    @elseif (Auth::user()->can('manage_clients'))
                             <li><a href="/users" id="topnav-admin">Admin</a></li>
                     @endif
                 @endif

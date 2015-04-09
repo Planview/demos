@@ -22,6 +22,7 @@ App::after(function($request, $response)
     //
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters
@@ -97,9 +98,34 @@ Route::filter('can', function ($route, $request, $permission)
     }
 });
 
-Route::filter('admin', function ()
+Route::filter('admin', function()
 {
-    if (!Entrust::can('manage_clients')) {
+    if (Auth::check()) { // this is necessary for logging in
+        // Is this an admin user?
+        if (!Auth::user()->can('manage_clients')) {
+            return Redirect::to('/');
+        }
+    }
+});
+
+Route::filter('pvadmin', function()
+{
+    // Is this an admin or super admin user?
+    if (!Auth::user()->can('manage_isrs')) {
         return Redirect::to('/');
     }
 });
+ 
+Route::filter('superadmin', function()
+{
+    // Is this a super admin user?
+    if (!Auth::user()->can('manage_admins')) {
+        return Redirect::to('/');
+    }
+});
+
+Route::when('users*', 'admin');
+Route::when('pvadmin/users*', 'pvadmin');
+Route::when('pvadmin/demos*', 'superadmin');
+Route::when('pvadmin/permissions*', 'superadmin');
+Route::when('pvadmin/roles*', 'superadmin');

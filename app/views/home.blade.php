@@ -13,14 +13,7 @@
     <div class="col-sm-4 col-sm-push-8">
 
         <div class="right-sidebar">
-            <div class="module-contact-info">
-                <h2 id="header-contact">Contact</h2>
-                <p><strong>ISR&nbsp;Admin</strong><br />
-                Location: North America<br />
-                Tel: 512-555-1212<br />
-                Mobil: 512-555-1212<br />
-                Email: <a href="mailto:isr-admin@planview.com" class="email-link" title="Email ISR&nbsp;Admin">isr-admin@planview.com</a></p>
-            </div>
+            @include('master.contact-module')
         </div>
 
     </div>

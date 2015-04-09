@@ -20,6 +20,7 @@ Route::resource('demos', 'DemosController', ['only' => ['index', 'show']]);
 
 Route::group(['prefix' => 'pvadmin', 'namespace' => 'pvadmin'], function()
 {
+    // Route::resource('', 'UsersController');
     Route::resource('demos', 'DemosController');
     Route::resource('permissions', 'PermissionsController');
     Route::resource('roles', 'RolesController');

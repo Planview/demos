@@ -44,8 +44,17 @@ class DemosController extends \BaseController {
      */
     public function show($id)
     {
-        $demo = Demo::findOrFail($id);
-        return View::make("demos.show")->with(array("demo"=>$demo));
+        if (Auth::user()->can('manage_clients')) {
+            // admins can view all demos
+            $demo = Demo::findOrFail($id);
+            return View::make("demos.show")->with(array("demo"=>$demo));
+        } else if (in_array($id, Demo::demoIdsUserCanAccess())) {
+            // user can view this demo
+            $demo = Demo::findOrFail($id);
+            return View::make("demos.show")->with(array("demo"=>$demo));
+        } else {
+            return Redirect::to('/demos')->with('message', "You do not have access to that demo.");;
+        }
     }
 
 
