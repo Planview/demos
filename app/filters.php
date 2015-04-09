@@ -16,12 +16,23 @@ App::before(function($request)
     //
 });
 
-
 App::after(function($request, $response)
 {
-    //
-});
+    $sessionExpirationInMinutes = 60;
+    $sessionExpiration = $sessionExpirationInMinutes * 60;
 
+    if(isset($_COOKIE['last_activity_timestamp'])) {
+        // update last activity time stamp
+        setcookie('last_activity_timestamp','Login sessions are limited to '.$sessionExpirationInMinutes.' minutes.', time() + $sessionExpiration, "/"); 
+    } else if ( Auth::check() ) {
+        // logout user
+        header_remove ('Location');
+        header( 'Location: /logout?session_expired=true' );
+    } else {
+        // set cookie 
+        setcookie('last_activity_timestamp','hello world', time() + $sessionExpiration, "/"); 
+    }
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +60,6 @@ Route::filter('auth', function()
         }
     }
 });
-
 
 Route::filter('auth.basic', function()
 {

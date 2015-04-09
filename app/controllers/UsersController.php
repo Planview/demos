@@ -329,6 +329,12 @@ class UsersController extends Controller
     {
         Confide::logout();
 
-        return Redirect::to('/')->with('message', "You are now logged out.");;
+        if (isset($_GET["session_expired"])) {
+            $message = "Your session has expired. Please login again.";
+        } else {
+            $message = "You are now logged out.";
+        }
+
+        return Redirect::to('/')->with('message', $message);
     }
 }
