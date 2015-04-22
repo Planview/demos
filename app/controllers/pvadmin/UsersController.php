@@ -8,6 +8,7 @@ use View;
 
 use Auth;
 use Config;
+use DB;
 use Isr;
 use Lang;
 use Mail;
@@ -25,8 +26,9 @@ class UsersController extends \BaseController {
      */
     public function index()
     {
-        $user           = User::findOrFail(Auth::id());
-        $title          = 'Manage Admin Users';
+        $user   = User::findOrFail(Auth::id());
+        $title  = 'Manage Admin Users';
+        $links  = false;
 
         if (isset($_GET["userByEmail"])) {
             $thisUser = User::where('email', '=', $_GET["userByEmail"])->firstOrFail();
@@ -35,9 +37,17 @@ class UsersController extends \BaseController {
             $title          = 'Manage All Users';
 
             if ($user->can('manage_admins')) {
-                $users = User::orderBy('email', 'asc')->get();
+                $users = User::orderBy('email', 'asc')->paginate(10);
+                $links = true;
             } else if ($user->can('manage_isrs')) {
-                $users = User::usersWithoutPermission('manage_isrs');
+                $userIds = User::usersWithPermissionIdArray('manage_isrs');
+
+                $users = DB::table('users')
+                    ->whereNotIn('id', $userIds)
+                    ->orderBy('email', 'asc')
+                    ->paginate(10);
+
+                $links = true;
             }
         } else {
             if ($user->can('manage_admins')) {
@@ -48,8 +58,9 @@ class UsersController extends \BaseController {
         }
 
         return View::make('pvadmin.users.index')->with([
-            'title'         => $title,
-            'users'         => $users
+            'links'     => $links,
+            'title'     => $title,
+            'users'     => $users
         ]);
     }
 
@@ -85,12 +96,12 @@ class UsersController extends \BaseController {
     {
         $password = '';
 
-        $user = new User();
+        $user           = new User();
         $isr_info_array = array();
 
-        $user->email      = Input::get('email');
-        $user->company    = Input::get('company');
-        $user->expires    = Input::get('expires');
+        $user->email             = Input::get('email');
+        $user->company           = Input::get('company');
+        $user->expires           = Input::get('expires');
         $user->confirmation_code = md5(uniqid(mt_rand(), true));
 
         if (Input::get('auto_password', false)) {
@@ -163,17 +174,33 @@ class UsersController extends \BaseController {
      */
     public function show($user)
     {
-        $roles = Role::optionsList();
-        $isr   = $user->isrInfo();
+        if (!Auth::user()->can('manage_admins') && $user->can('manage_isrs')) {
+            return Redirect::route('pvadmin.users.index')
+                ->withError('Admins can only update ISR Admins.');
+        } else {
+            if (!Auth::user()->can('manage_admins')) {
+                $roles      = Role::isrAdminRole();
+                $multiple   = null;
+                $user->can('manage_clients') ? $checked = true : $checked = false;
+            } else {
+                $checked = false;
+                $roles = Role::optionsList();
+                $multiple = 'multiple';
+            }
 
-        return View::make('pvadmin.users.form')->with([
-            'title'     => "Update User: {$user->email}",
-            'action'    => ['pvadmin.users.update', $user->id],
-            'isr'       => $isr,
-            'roles'     => $roles,
-            'user'      => $user,
-            'method'    => 'put'
-        ]);
+            $isr   = $user->isrInfo();
+
+            return View::make('pvadmin.users.form')->with([
+                'title'     => "Update User: {$user->email}",
+                'action'    => ['pvadmin.users.update', $user->id],
+                'checked'   => $checked,
+                'isr'       => $isr,
+                'multiple'  => $multiple,
+                'roles'     => $roles,
+                'user'      => $user,
+                'method'    => 'put'
+            ]);
+        }
     }
 
     /**
@@ -191,7 +218,13 @@ class UsersController extends \BaseController {
         }
 
         if (Input::has('roles')) {
-            $user->roles()->sync(Input::get('roles'));
+            if (is_array(Input::get('roles'))) {
+                $user->roles()->sync(Input::get('roles'));
+            } else {
+                $user->roles()->sync((array) Input::get('roles'));
+            }
+        } else {
+            $user->roles()->sync([]);
         }
 
         $resultUser = $user->save();

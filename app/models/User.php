@@ -38,36 +38,26 @@ class User extends Eloquent implements ConfideUserInterface
      */
     public static function usersClientsOnly()
     {
-        $list = array();
-
-        foreach (self::orderBy('company', 'asc')->get() as $user) {
-            if (!$user->can('manage_clients')) {
-                $list[] = $user;
-            }
-        }
-        return $list;
+        return self::orderBy('company', 'asc')->get()->filter(function ($user) {
+            return !$user->can('manage_clients');
+        });
     }
 
     /**
      * Create an array of users with specific abilities
      * @return User object array
      */
-    public static function usersWithAbility($role, $permission)
+    public static function usersWithAbility($role, $permission = array())
     {
-        $list = array();
-
         $options = array(
             'validate_all' => true,
             'return_type'  => 'boolean'
         );
-
-        foreach (self::orderBy('email', 'asc')->get() as $user) {
-            if ($user->ability($role, $permission, $options)) {
-                $list[] = $user;
-            }
-        }
-        return $list;
+        return self::orderBy('email', 'asc')->get()->filter(function ($user) use ($role, $options, $permission) {
+            return $user->ability($role, $permission, $options);
+        });
     }
+
 
     /**
      * Create an array of users with a specific permission
@@ -75,14 +65,28 @@ class User extends Eloquent implements ConfideUserInterface
      */
     public static function usersWithPermission($permission)
     {
-        $list = array();
+        return self::orderBy('email', 'asc')->get()->filter(function ($user) use ($permission) {
+            return $user->can($permission);
+        });
+    }
 
-        foreach (self::orderBy('email', 'asc')->get() as $user) {
-            if ($user->can($permission)) {
-                $list[] = $user;
-            }
+    /**
+     * Create an array of user IDs with a specific permission
+     * @return User id array
+     */
+    public static function usersWithPermissionIdArray($permission)
+    {
+        $userIds = array();
+
+        $filteredUsers = self::orderBy('email', 'asc')->get()->filter(function ($user) use ($permission) {
+            return $user->can($permission);
+        });
+
+        foreach ($filteredUsers as $filteredUser) {
+            $userIds[] = $filteredUser->id;
         }
-        return $list;
+
+        return $userIds;
     }
 
     /**
@@ -91,14 +95,9 @@ class User extends Eloquent implements ConfideUserInterface
      */
     public static function usersWithoutPermission($permission)
     {
-        $list = array();
-
-        foreach (self::orderBy('email', 'asc')->get() as $user) {
-            if (!$user->can($permission)) {
-                $list[] = $user;
-            }
-        }
-        return $list;
+        return self::orderBy('email', 'asc')->get()->filter(function ($user) use ($permission) {
+            return !$user->can($permission);
+        });
     }
 
     /**

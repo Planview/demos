@@ -10,11 +10,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        // $users = User::orderBy('company', 'asc')
-        //              ->orderBy('email', 'asc')
-        //              ->paginate(20);
+        $userIds = User::usersWithPermissionIdArray('manage_clients');
 
-        $users = User::usersClientsOnly();
+        $users = DB::table('users')
+            ->whereNotIn('id', $userIds)
+            ->orderBy('company', 'asc')
+            ->paginate(10);
 
         return View::make("users.index")->with(array("users"=>$users));
     }
@@ -53,7 +54,7 @@ class UsersController extends Controller
      */
     public function store()
     {
-        $user               = new User();
+        $user                    = new User();
 
         $user->email             = Input::get('email');
         $user->company           = Input::get('company');
@@ -110,10 +111,8 @@ class UsersController extends Controller
      * @param  int  $id
      * @return Response
      */
-    // public function show($id)
     public function show($user)
     {
-        // $user  = User::findOrFail($id);
         $isrs  = User::isrList();
         $demos = Demo::orderBy('language', 'asc')
                      ->orderBy('enterprise_version', 'desc')
@@ -140,7 +139,6 @@ class UsersController extends Controller
     // public function update($id)
     public function update($user)
     {
-        // $user = User::findOrFail($id);
         if (Input::get('password')) {
             if (Input::get('password') === Input::get('password_confirmation')) {
                 $user->password = Input::get('password');

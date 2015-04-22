@@ -43,22 +43,25 @@
                             3
                         ) }}
                 @endif
-                {{ ControlGroup::generate(
-                    Form::label('roles', 'Roles'),
-                    Form::select('roles', $roles, Input::old('roles') ?: $user->rolesById(), ['multiple', 'name' => 'roles[]']),
-                    null,
-                    3
-                ) }}
+                @if ($multiple)
+                    {{ ControlGroup::generate(
+                        Form::label('roles', 'Roles'),
+                        Form::select('roles', $roles, Input::old('roles') ?: $user->rolesById(), ['multiple', 'name' => 'roles[]']),
+                        null,
+                        3
+                    ) }}
+                @else
+                    <div class='form-group'>
+                        <label for="roles" class="control-label col-sm-3">Is This User an ISR?</label>
+                        <div class='col-sm-9' style="padding-top:8px;">
+                            <input {{{ $checked ? 'checked' : '' }}} name="roles" type="radio" value="{{ $roles->id }}"> Yes
+                            &nbsp; &nbsp; <input name="roles" type="radio" value=""> No
+                        </div>
+                    </div>
+                @endif
             </fieldset>
             <fieldset>
                 <legend>ISR-Only Information</legend>
-                {{-- ControlGroup::generate(
-                    Form::label('isr_first_name', 'ISR First Name'),
-                    Form::text('isr_first_name', Input::old('isr_first_name') ?: $isr->isr_first_name
-                        ) . $errors->first('isr_first_name', '<span class="label label-danger">:message</span>'),
-                    null,
-                    3
-                ) --}}
                 {{ ControlGroup::generate(
                     Form::label('isr_first_name', 'ISR First Name'),
                     Form::text('isr_first_name', Input::old('isr_first_name', $isr->isr_first_name
@@ -124,14 +127,6 @@
             </div>
         </div>
     {{ Form::close() }}
-
-<?php
-    // echo "<br><br>ISR:";
-    // var_dump($user->isrs());
-    // echo "<br><br>USER:";
-    // var_dump($user);
-?>
-
     </article>
 @stop
 

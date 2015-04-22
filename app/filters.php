@@ -16,7 +16,7 @@ App::before(function($request)
     // log the user out if their last_activity_timestamp cookie has expires
     if ( !isset($_COOKIE['last_activity_timestamp']) && Auth::check() ) {
         Confide::logout();
-         return Redirect::to('/')->with('message', 'Your session has expired. Please login again.');
+        return Redirect::to('/')->with('message', 'Your session has expired. Please login again.');
     }
 });
 

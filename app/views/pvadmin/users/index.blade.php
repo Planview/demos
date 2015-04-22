@@ -16,7 +16,9 @@
         <a href="{{ URL::route('pvadmin.users.create') }}" class="btn btn-success pull-right"><span class="fa fa-plus"></span> Add New User</a>
         <h1>{{{ $title }}}</h1>
     </header>
-    {{-- $users->links() --}}
+    @if ($links)
+        {{ $users->appends(array('allUsers' => 'true'))->links() }}
+    @endif
     <article>
         <ul class="list-group">
             @forelse($users as $user)
@@ -35,12 +37,9 @@
                 <li>What, no users?</li>
             @endforelse
         </ul>
-
-<?php
-    // echo "<br><br>USERS:";
-    // var_dump($users);
-?>
-
+        @if ($links)
+            {{ $users->appends(array('allUsers' => 'true'))->links() }}
+        @endif
     </article>
 @stop
 
