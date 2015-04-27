@@ -12,24 +12,17 @@
 //*************************************************************************/
 $planview-lilac: #ba8aa4;
 @mixin nav-top-default {
-  background-position:8px 2px; //8px 3px;
+  background-position:8px 2px;
   background-repeat:no-repeat;
   border-bottom:7px solid #FFF;
   color: #999;
-  font-size:14px; //13px;
+  font-size:14px;
   font-weight:bold;
-  //line-height:25px; //25px;
-  //max-height:32px;
   height:33px;
   min-width:100px;
-  //padding:0px 0px 7px 30px;
   padding:0px 0px 0px 30px;
 }
 //*************************************************************************/
-
-//.col-sm-4 { border:1px solid #FF0000; }
-//.col-sm-8 { border:1px solid #00FF00; }
-//.row { border:1px solid #FF0000; }
 
 body {
   background-color: #ebebeb;
@@ -165,6 +158,10 @@ header {
     }
     ul.list-inline {
       margin-bottom:0;
+      li a {
+        color:#999999;
+        margin-left:3px;
+      }
     }
   }
 }
@@ -260,17 +257,8 @@ main {
     @media screen and (max-width: $screen-xs-max) {
       margin-top:5px;
     }
-    // button {
-    //   background-color:#aab300;
-    //   border-width:0;
-    //   &:hover {
-    //     background-color:#aab300;
-    //     color:#FFF;
-    //   }
-    // }
     .error-message {
       color:#FF0000;
-      //font-size: 90%;
       font-weight:bold;
     }
   }
@@ -329,6 +317,10 @@ footer {
 label {
   color:$brand-primary;
   font-weight: normal;
+}
+
+.alignecenter {
+    text-align: center;
 }
 
 //*************************************************************************/
@@ -391,20 +383,3 @@ label {
     }
   }
 }
-//* admin pages */
-.admin {
-
-}
-
-// old code for laravel development
-// body {
-//     margin:1em 2em 2em 2em;
-// }
-// section#page-body {
-//     max-width:1000px;
-//     margin-left:auto !important;
-//     margin-right:auto !important;
-// }
-// main {
-//     margin-bottom:2em; 
-// }

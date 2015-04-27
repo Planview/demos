@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8; IE=EmulateIE9">
     @section('styles')
-      {{ HTML::style('/css/bootstrap.min.css') }}
+      {{ HTML::style('/css/main.min.css') }}
       {{ HTML::style('//fast.fonts.net/cssapi/2efe21fa-d468-4c24-a867-67a8c2fb7004.css') }}
       <!-- individual page styles -->
     @show
@@ -63,11 +63,11 @@
           <div class="col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm">
             <div class="follow-links">
               <ul class="list-inline">
-                <li><a href="https://twitter.com/planview" target="_blank" id="icon-social-twitter-link"><img src="/img/icon-social-twitter-23x23.png" width="23" height="23" alt="Planview on Twitter" title="Planview on Twitter" /></a></li>
-                <li><a href="http://www.linkedin.com/company/planview" target="_blank"><img src="/img/icon-social-linked-in-23x23.png" width="23" height="23" alt="Planview on LinkedIn" title="Planview on LinkedIn" /></a></li>
-                <li><a href="https://www.xing.com/companies/planviewgmbh-portfoliodrivenperformance" target="_blank"><img src="/img/icon-social-xing-23x23.png" width="23" height="23" alt="Planview auf XING" title="Planview auf XING" /></a></li>
-                <li><a href="http://www.youtube.com/planviewvideos" target="_blank"><img src="/img/icon-social-youtube-23x23.png" width="23" height="23" alt="Planview on YouTube" title="Planview on YouTube" /></a></li>
-                <li><a href="https://www.facebook.com/pages/Planview-Inc/89422974772" target="_blank"><img src="/img/icon-social-facebook-23x23.png" width="23" height="23" alt="Planview on Facebook" title="Planview on Facebook" /></a></li>
+                <li><a href="https://twitter.com/planview" title="Planview on Twitter" href="http://www.twitter.com/planview" target="_blank"><span class="fa fa-twitter-square fa-lg"></span><span class="sr-only">Planview on Twitter</span></a></li>
+                <li><a href="http://www.linkedin.com/company/planview" title="Planview on LinkedIn" target="_blank"><span class="fa fa-linkedin-square fa-lg"></span><span class="sr-only">Planview on LinkedIn</span></a></li>
+                <li><a href="https://www.xing.com/companies/planviewgmbh-portfoliodrivenperformance" title="Planview auf XING" target="_blank"><span class="fa fa-xing-square fa-lg"></span><span class="sr-only">Planview auf XING</span></a></li>
+                <li><a href="http://www.youtube.com/planviewvideos" title="Planview on YouTube" target="_blank"><span class="fa fa-youtube-square fa-lg"></span><span class="sr-only">Planview on YouTube</span></a></li>
+                <li><a href="https://www.facebook.com/pages/Planview-Inc/89422974772" title="Planview on Facebook" target="_blank"><span class="fa fa-facebook-square fa-lg"></span><span class="sr-only">Planview on Facebook</span></a></li>
               </ul>
             </div>
           </div>
