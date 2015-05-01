@@ -33,7 +33,7 @@ class UsersController extends \BaseController {
         if (isset($_GET["userByEmail"])) {
             $thisUser = User::where('email', '=', $_GET["userByEmail"])->firstOrFail();
             return Redirect::action('pvadmin.users.show', $thisUser->id);
-        } else if (isset($_GET["allUsers"])) {
+        } else if (isset($_GET["allUsers"]) || isset($allUsers)) {
             $title          = 'Manage All Users';
 
             if ($user->can('manage_admins')) {
@@ -71,16 +71,25 @@ class UsersController extends \BaseController {
      */
     public function create()
     {
-        $isrs   = User::isrList();
-        $roles  = Role::optionsList();
         $user   = new User();
         $isr    = $user->isrInfo();
+
+        if (!Auth::user()->can('manage_admins')) {
+            $roles      = Role::isrAdminRole();
+            $multiple   = null;
+            $user->can('manage_clients') ? $checked = true : $checked = false;
+        } else {
+            $checked = false;
+            $roles = Role::optionsList();
+            $multiple = 'multiple';
+        }
 
         return View::make('pvadmin.users.form')->with([
             'title'     => 'Create a New User',
             'action'    => 'pvadmin.users.store',
+            'checked'   => $checked,
             'isr'       => $isr,
-            'isrs'      => $isrs,
+            'multiple'  => $multiple,
             'user'      => $user,
             'roles'     => $roles,
             'method'    => 'post'
@@ -265,18 +274,25 @@ class UsersController extends \BaseController {
     {
         $message = 'User deleted: '.$user->email;
 
-        // delete ISR info first
+        // 1. delete demo access
+        $resultDemoAccess  = $user->demos()->sync([]);
+        // 2. (if any) delete associated ISR ID (foreign key) from all users
+        $resultAssociatedUsersQuery  = DB::update('update users set isr_contact_id = null where isr_contact_id = ?', array($user->id));
+        // 3. (if any) delete ISR info
         $resultIsr  = true;
         if (!$user->isrs->isEmpty()) {
             $resultIsr  = $user->isrs()->delete();
         }
+        // 4. delete user
         $resultUser = $user->delete();
 
-        if ($resultIsr && $resultUser) {
-            return Redirect::route('pvadmin.users.index')
+        isset($_GET["allUsers"]) ? $showAllUsers = array('allUsers' => 'true') : $showAllUsers = null;
+
+        if ($resultDemoAccess && $resultIsr && $resultUser) {
+            return Redirect::route('pvadmin.users.index', $showAllUsers)
                 ->withMessage($message);
         } else {
-            return Redirect::route('pvadmin.users.index')
+            return Redirect::route('pvadmin.users.index', $showAllUsers)
                 ->withError('There was a problem with your submission. See below for more information.')
                 ->withErrors($user->errors());
         }
