@@ -107,6 +107,8 @@ header {
       @media screen and (max-width: $screen-xs-max) { //768px
         margin: 10px auto;
         a.navbar-nav-link-top {
+          display:block;
+          visibility: visible;
           max-width:200px;
           margin-left:25px;
         }
@@ -184,6 +186,7 @@ header {
 
 main {
   //* main general styles */
+  min-height:400px;
   padding:0 4em 2em 4em;
   @media screen and (max-width: 450px) {
     padding:0 1em 1em 1em;
