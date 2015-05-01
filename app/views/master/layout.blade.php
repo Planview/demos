@@ -86,26 +86,32 @@
     @section('scripts')
       {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
       {{ HTML::script('/js/bootstrap.min.js') }}
-
-    <!-- SmartMenus jQuery plugin -->
+    {{-- SmartMenus jQuery plugin --}}
     <script src="/js/jquery.smartmenus.js"></script>
-    <!-- SmartMenus jQuery Bootstrap Addon -->
+    {{-- SmartMenus jQuery Bootstrap Addon --}}
     <script src="/js/jquery.smartmenus.bootstrap.js"></script>
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    {{-- Google Analytics --}}
     <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','UA-XXXXX-X');ga('send','pageview');
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-54213319-1', 'auto');
+      ga('send', 'pageview');
     </script>
-
     <script src="/js/main.js"></script>
-
+    @if (Auth::check())
+        {{-- Marketo Munchkin Lead Tracking Code --}}
+        <script src="http://munchkin.marketo.net/munchkin.js"></script>
+        <script>
+        Munchkin.init("587-QLI-337");
+        Munchkin.munchkinFunction('associateLead',
+            { Email: '{{ Auth::user()->email }}' },
+            '{{ hash('sha1', 'Loc~*Gi4e!05EC3u~^d5m7L;1=.0;w' . Auth::user()->email) }}'
+        );
+        </script>
+    @endif
       <!-- individual page scripts -->
     @show
-
   </body>
 </html>
