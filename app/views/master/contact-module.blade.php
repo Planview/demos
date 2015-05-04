@@ -24,6 +24,22 @@ $isr_contact_email = '<a href="mailto:market@planview.com" class="email-link" ti
         $isr_contact_email = '<a href="mailto:'.$associatedIsrEmail.'" class="email-link" title="Email '.$associatedIsrInfo->isr_first_name . ' ' . $associatedIsrInfo->isr_last_name.'">'.$associatedIsrEmail.'</a>';
         ?>
     @endif
+@elseif ($associatedIsrInfo = Isr::associatedIsrInfo(Auth::id()))
+    <?php
+    $isr_contact_name = $associatedIsrInfo->isr_first_name . ' ' . $associatedIsrInfo->isr_last_name;
+    $isr_contact_location = $associatedIsrInfo->isr_location;
+    $isr_contact_phone = $associatedIsrInfo->isr_phone;
+
+    if ($associatedIsrInfo->isr_mobile_phone) {
+        $isr_contact_mobile = 'Mobil: '.$associatedIsrInfo->isr_mobile_phone.'<br />';
+    } else {
+        $isr_contact_mobile = '';
+    }
+
+    $associatedIsrEmail = Auth::user()->email;
+
+    $isr_contact_email = '<a href="mailto:'.$associatedIsrEmail.'" class="email-link" title="Email '.$associatedIsrInfo->isr_first_name . ' ' . $associatedIsrInfo->isr_last_name.'">'.$associatedIsrEmail.'</a>';
+    ?>
 @endif
 
 <div class="module-contact-info">
