@@ -63,7 +63,7 @@
           <div class="col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm">
             <div class="follow-links">
               <ul class="list-inline">
-                <li><a href="https://twitter.com/planview" title="Planview on Twitter" href="http://www.twitter.com/planview" target="_blank"><span class="fa fa-twitter-square fa-lg"></span><span class="sr-only">Planview on Twitter</span></a></li>
+                <li><a href="https://twitter.com/planview" title="Planview on Twitter" target="_blank"><span class="fa fa-twitter-square fa-lg"></span><span class="sr-only">Planview on Twitter</span></a></li>
                 <li><a href="http://www.linkedin.com/company/planview" title="Planview on LinkedIn" target="_blank"><span class="fa fa-linkedin-square fa-lg"></span><span class="sr-only">Planview on LinkedIn</span></a></li>
                 <li><a href="https://www.xing.com/companies/planviewgmbh-portfoliodrivenperformance" title="Planview auf XING" target="_blank"><span class="fa fa-xing-square fa-lg"></span><span class="sr-only">Planview auf XING</span></a></li>
                 <li><a href="http://www.youtube.com/planviewvideos" title="Planview on YouTube" target="_blank"><span class="fa fa-youtube-square fa-lg"></span><span class="sr-only">Planview on YouTube</span></a></li>
