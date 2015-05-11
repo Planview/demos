@@ -54,3 +54,12 @@
         @endif
       </article>
 @stop
+
+@if (!Auth::check())
+    @section('scripts')
+        @parent
+        {{-- This fixes the placeholder attribute in IE --}}
+        {{-- http://jamesallardice.github.io/Placeholders.js/ --}}
+        {{ HTML::script('/js/placeholders.min.js') }}
+    @stop
+@endif

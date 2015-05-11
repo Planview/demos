@@ -90,9 +90,6 @@
     @section('scripts')
       {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
       {{ HTML::script('/js/bootstrap.min.js') }}
-      {{-- This fixes the placeholder attribute in IE --}}
-      {{-- http://jamesallardice.github.io/Placeholders.js/ --}}
-      {{ HTML::script('/js/placeholders.min.js') }}
       {{-- SmartMenus jQuery plugin --}}
       <script src="/js/jquery.smartmenus.js"></script>
       {{-- SmartMenus jQuery Bootstrap Addon --}}
