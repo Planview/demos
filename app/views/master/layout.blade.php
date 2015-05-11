@@ -90,20 +90,23 @@
     @section('scripts')
       {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
       {{ HTML::script('/js/bootstrap.min.js') }}
-    {{-- SmartMenus jQuery plugin --}}
-    <script src="/js/jquery.smartmenus.js"></script>
-    {{-- SmartMenus jQuery Bootstrap Addon --}}
-    <script src="/js/jquery.smartmenus.bootstrap.js"></script>
-    {{-- Google Analytics --}}
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-54213319-1', 'auto');
-      ga('send', 'pageview');
-    </script>
-    <script src="/js/main.js"></script>
+      {{-- This fixes the placeholder attribute in IE --}}
+      {{-- http://jamesallardice.github.io/Placeholders.js/ --}}
+      {{ HTML::script('/js/placeholders.min.js') }}
+      {{-- SmartMenus jQuery plugin --}}
+      <script src="/js/jquery.smartmenus.js"></script>
+      {{-- SmartMenus jQuery Bootstrap Addon --}}
+      <script src="/js/jquery.smartmenus.bootstrap.js"></script>
+      {{-- Google Analytics --}}
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-54213319-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+      <script src="/js/main.js"></script>
     @if (Auth::check())
         {{-- Marketo Munchkin Lead Tracking Code --}}
         <script src="http://munchkin.marketo.net/munchkin.js"></script>
