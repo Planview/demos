@@ -7,9 +7,6 @@
 @section("styles")
     @parent
     <link type="text/css" href="/css/jquery-datepick.css" rel="stylesheet" />
-    <style>
-        button#generate_password { margin-right:1em; }
-    </style>
 @stop
 
 @section("page_messages")
@@ -20,6 +17,7 @@
     <header class="page-header">
         <h1>{{ $title }}</h1>
     </header>
+    <h2 class="sr-only">User Form Fields</h2>
     {{ Form::horizontal(['route' => $action, 'class' => 'row', 'method' => $method]) }}
         <div class="col-sm-10">
             @if (null === $user->id)
@@ -50,12 +48,13 @@
                     null,
                     3
                 ) }}
-                {{ ControlGroup::generate(
-                    Form::label('generate_password', 'Generate Password'),
-                    Button::success('Generate a New Password')->withAttributes(['id' =>'generate_password']),
-                    Button::primary('Clear Password Field')->withAttributes(['id' =>'clear_password']),
-                    3
-                ) }}
+                <div class='form-group'>
+                    <div class="control-label col-sm-3 label-generate-password">Generate Password</div>
+                    <div class='col-sm-9'>
+                        <button type='button' class='btn btn-success' id='generate_password'>Generate a New Password</button>
+                        <button type='button' class='btn btn-primary' id='clear_password'>Clear Password Field</button>
+                    </div>
+                </div>
             @endif
             {{ ControlGroup::generate(
                 Form::label('company', 'Company'),
@@ -69,12 +68,6 @@
                 null,
                 3
             ) }}
-            {{-- ControlGroup::generate(
-                Form::label('isr_contact_id', 'ISR'),
-                Form::select('isr_contact_id', Input::old('isr_contact_id', $isrs), $user->isr_contact_id ?: Auth::id(), ['required']) . $errors->first('isr_contact_id', '<span class="label label-danger">:message</span>'),
-                null,
-                3
-            ) --}}
             {{ ControlGroup::generate(
                 Form::label('isr_contact_id', 'ISR'),
                 Form::select('isr_contact_id', $isrs, $user->isr_contact_id ?: Auth::id(), ['required']) . $errors->first('isr_contact_id', '<span class="label label-danger">:message</span>'),
@@ -126,58 +119,6 @@
             </div>
         </div>
     {{ Form::close() }}
-{{--
-    <div class="row">
-        <div class="col-sm-6">
-        <fieldset>
-            <legend>Modify an Existing User</legend>
-            {{ Form::horizontal(['route' => $action, 'method' => $method, 'class' => 'user-modify']) }}
-            {{ ControlGroup::generate(
-                Form::label('email-modify', 'Email'),
-                Form::email('email-modify', '', ['required']) . $errors->first('email-modify', '<span class="label label-danger">:message</span>'),
-                null,
-                2
-            ) }}
-            <div class="row">
-                <div class='col-sm-2'>
-                </div>
-                <div class='col-sm-6'>
-                    <div class="well">
-                        {{ Button::primary('Modify')->submit()->block() }}
-                    </div>
-                </div>
-                <div class='col-sm-4'>
-                </div>
-            </div>
-        {{ Form::close() }}
-        </fieldset>
-        </div>
-        <div class="col-sm-6">
-        <fieldset>
-            <legend>View a User&rsquo;s History</legend>
-            {{ Form::horizontal(['route' => $action, 'method' => $method, 'class' => 'user-history']) }}
-            {{ ControlGroup::generate(
-                Form::label('email-history', 'Email'),
-                Form::email('email-history', '', ['required']) . $errors->first('email-history', '<span class="label label-danger">:message</span>'),
-                null,
-                2
-            ) }}
-            <div class="row">
-                <div class='col-sm-2'>
-                </div>
-                <div class='col-sm-6'>
-                    <div class="well">
-                        {{ Button::primary('View')->submit()->block() }}
-                    </div>
-                </div>
-                <div class='col-sm-4'>
-                </div>
-            </div>
-        {{ Form::close() }}
-        </fieldset>
-        </div>
-    </div>
---}}
 @stop
 
 @section("scripts")

@@ -48,41 +48,30 @@ header {
     height:100%;
     width:100%;
   }
+  #left-gray-border {
+    border-left:solid 8px #666666;
+    margin-left:15px;
+  }
   .site-title {
     background: {
       size: contain;
-      image: url('/img/logo-planview-enterprise-product-demos-318x108.png');
+      image: url('/img/logo-planview-enterprise-product-demos-265x90.png');
       repeat: no-repeat;
       position: center center;
     }
-    width: 318px;
-    height: 108px;
+    margin:10px 0;
+    width: 265px;
+    height: 90px;
     @include text-hide();
+    font-family: $font-family-base;
     h1 {
+      font-size:30px;
       margin:0;
       padding:0;
     }
   }
-  .site-title-planview {
-    background: {
-      size: contain;
-      image: url('/img/planview-logo-color.png');
-      repeat: no-repeat;
-      position: center center;
-    }
-    width: 170px;
-    height: 40px;
-    @include text-hide();
-    @media screen and (max-width: $screen-xs-max) {
-      margin: 10px auto;
-    }
-    @media screen and (min-width: $screen-sm-min) {
-      margin: 18px 17px 17px 0px;
-    }
-    h1 {
-      margin:0;
-      padding:0;
-    }
+  .site-nav-top-padding {
+    min-height:77px;
   }
 
   //* top nav links */
@@ -153,6 +142,7 @@ header {
   }
   //* social media links */
   .follow-links {
+    margin-right:30px;
     min-width:180px;
     text-align: center;
     @media screen and (min-width: $screen-sm-min) {
@@ -192,7 +182,7 @@ main {
     padding:0 1em 1em 1em;
   }
   h1 {
-    color: #546799;
+    color: #333333;
     font: {
       size: 24px;
       weight: bold;
@@ -228,7 +218,7 @@ main {
       }
     }
     .module-contact-info {
-      background-color:#d4e8f7;
+      background-color:#ccdce4;
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
       border-radius: 5px;
@@ -243,15 +233,12 @@ main {
       h2 { font-size:16px; }
     }
   }
-  .form-button {
-    display: inline;
-  }
 
   //* page-specific styles */
 
   //* home (public) */
   .panel-default {
-    background-color:#dcdcdc;
+    background-color:#ccdce4;
     margin-top:20px;
     padding:20px 20px 10px 20px;
     @media screen and (max-width: $screen-sm-max) {
@@ -264,6 +251,9 @@ main {
       color:#FF0000;
       font-weight:bold;
     }
+  }
+  .panel-homepage-login {
+    background-color: #dcdcdc !important;
   }
 
   //* demos page (demo list) */
@@ -308,22 +298,57 @@ main {
 }
 
 //* footer styles */
+.footer-logo {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  .site-title-footer-planview {
+    background: {
+      size: contain;
+      image: url('/img/planview-logo-333-148x38.png');
+      repeat: no-repeat;
+      position: center center;
+    }
+    margin-left: auto;
+    margin-right: auto;
+    width: 148px;
+    height: 38px;
+    @include text-hide();
+    font-family: $font-family-base;
+    a { 
+      color:transparent;
+    }
+    h1 {
+      color:transparent;
+      margin:0;
+      padding:0;
+    }
+  }
+}
 footer {
   &#site-footer {
-    background-color:#5381ac;
+    background-color:#618db4;
     color:#FFF;
-    padding:1em 2em 1em 0;
+    padding:.5em 1em;
     text-align:right;
   }
 }
 
+//* other styles */
+button#generate_password {
+  margin-right:1em;
+}
 label {
   color:$brand-primary;
   font-weight: normal;
 }
-
 .alignecenter {
-    text-align: center;
+  text-align: center;
+}
+.form-button {
+  display: inline;
+}
+.label-generate-password {
+  color: #546799;
 }
 
 //*************************************************************************/

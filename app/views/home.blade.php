@@ -19,7 +19,7 @@
     </div>
     @else
       {{ Form::open(['action' => 'UsersController@doLogin', 'class' => 'col-sm-4 col-sm-push-8']) }}
-      <div class="panel panel-default">
+      <div class="panel panel-default panel-homepage-login">
         @if (Session::get('message'))
             <p class="error-message text-center">{{{ Session::get('message') }}}</p>
         @endif

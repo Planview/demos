@@ -18,18 +18,14 @@
 
   <div id="site-wrapper" class="container">
     <header id="site-header" class="row">
+    <div id="left-gray-border" class="row">
       <div class="col-sm-5 col-md-4 col-lg-4">
         <div class="site-title">
           <h1>Planview Enterprise Product Demos</h1>
         </div>
       </div>
       <div class="site-info col-sm-7 col-md-8 col-lg-8">
-        <div class="row hidden-xs">
-          <a href="http://www.planview.com/" title="Planview" target="_blank">
-            <div class="site-title-planview pull-right">
-              <h1>Planview</h1>
-            </div>
-          </a>
+        <div class="row hidden-xs site-nav-top-padding">
         </div>
         <div class="row">
           <nav class="site-nav col-sm-8 col-md-8 col-lg-8"> 
@@ -44,7 +40,7 @@
                         <ul class="dropdown-menu">
                             @section('nav_menu_admin')
                                 <li>{{HTML::link('/pvadmin/users', 'Admin Users', array('id' => 'topnav-admin-users'));}}</li>
-                                <li>{{HTML::link('/pvadmin/users?allUsers=true', 'All Users', array('id' => 'topnav-admin-users'));}}</li>
+                                <li>{{HTML::link('/pvadmin/users?allUsers=true', 'All Users', array('id' => 'topnav-admin-users-all'));}}</li>
                                 @if (Auth::user()->can('manage_admins'))
                                     <li>{{HTML::link('/pvadmin/demos', 'All Demos', array('id' => 'topnav-admin-demos'));}}</li>
                                     <li>{{HTML::link('/pvadmin/roles', 'Roles', array('id' => 'topnav-admin-roles'));}}</li>
@@ -73,12 +69,20 @@
           </div>
         </div>
       </div>
+    </div>
     </header>
     <div id="content-topper"></div>
     <main class="row" id="content">
       @yield("page_messages",'')
       @yield('content')
     </main>
+      <div class="row footer-logo">
+        <div class="site-title-footer-planview">
+          <a href="http://www.planview.com/" title="Planview" target="_blank">
+            <h1>Planview</h1>
+          </a>
+        </div>
+      </div>
     <footer id="site-footer">
       &copy; <?php echo date("Y"); ?> Planview, Inc., All Rights Reserved. 
     </footer>

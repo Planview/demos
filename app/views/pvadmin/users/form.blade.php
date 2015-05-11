@@ -7,13 +7,6 @@
     {{{ $title }}}
 @stop
 
-@section("styles")
-    @parent
-    <style>
-        button#generate_password { margin-right:1em; }
-    </style>
-@stop
-
 @section("page_messages")
     @include('pvadmin.partials.flash')
 @stop
@@ -23,6 +16,7 @@
         <h1>{{{ $title }}}</h1>
     </header>
     <article>
+    <h2 class="sr-only">User Form Fields</h2>
     {{ Form::horizontal(['route' => $action, 'class' => 'row', 'method' => $method]) }}
         <div class="col-sm-9">
             <fieldset>
@@ -112,12 +106,13 @@
                         null,
                         3
                     ) }}
-                    {{ ControlGroup::generate(
-                        Form::label('password_help', 'Generate Password'),
-                        Button::success('Generate a New Password')->withAttributes(['id' =>'generate_password']),
-                        Button::primary('Clear Password Field')->withAttributes(['id' =>'clear_password']),
-                        3
-                    ) }}
+                    <div class='form-group'>
+                        <div class="control-label col-sm-3 label-generate-password">Generate Password</div>
+                        <div class='col-sm-9'>
+                            <button type='button' class='btn btn-success' id='generate_password'>Generate a New Password</button>
+                            <button type='button' class='btn btn-primary' id='clear_password'>Clear Password Field</button>
+                        </div>
+                    </div>
                 </fieldset>
             @endif
         </div>
