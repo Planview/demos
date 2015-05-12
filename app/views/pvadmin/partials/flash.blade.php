@@ -1,5 +1,7 @@
 @if (Session::has('message'))
-    {{ Button::info(Session::get('message')) }}
+    <div class="session-message">
+        {{ Session::get('message') }}
+    </div>
 @elseif (Session::has('error'))
     {{ Button::danger(Session::get('error')) }}
 @endif
