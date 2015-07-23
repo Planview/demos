@@ -204,10 +204,10 @@ class UsersController extends Controller
             // ensure user's expiration hasn't expired
             if (Auth::user()->can('manage_clients')) {
                 // login all admins
-                return Redirect::intended('/');
+                return Redirect::intended('/?loggedin=true');
             } else if ((Auth::user()->expires) > $today) {
                 // user's expiration hasn't expired
-                return Redirect::intended('/');
+                return Redirect::intended('/?loggedin=true');
             } else {
                 // user's expiration has expired 
                 Confide::logout();
