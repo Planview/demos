@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>@yield("title") | Planview Demos</title>
+    <title>@yield("title") | Planview Product Demos</title>
     <meta name="description" content="">
     <meta name="robots" content="{{{ $robots or 'noindex,nofollow' }}}">
     <meta name="viewport" content="width=device-width">

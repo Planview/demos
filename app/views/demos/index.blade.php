@@ -4,7 +4,7 @@
 @extends("master.layout")
 
 @section("title")
-    Planview Product Demos
+    View Planview Product Demos
 @stop
 
 @section("page_messages")
@@ -12,7 +12,7 @@
 @stop
 
 @section("content")
-    <h1 id="page-title">View Planview Demos</h1>
+    <h1 id="page-title">View Planview Product Demos</h1>
 
     @if (Auth::check())
         <p class="demo-list-instructions">Click on a demo title to access:</p>

@@ -4,7 +4,7 @@
 @extends("master.layout")
 
 @section("title")
-    Planview Enterprise Product Demos
+    Home
 @stop
 
 @section("content")

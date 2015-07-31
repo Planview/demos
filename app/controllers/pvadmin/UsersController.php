@@ -45,7 +45,7 @@ class UsersController extends \BaseController {
                 $users = DB::table('users')
                     ->whereNotIn('id', $userIds)
                     ->orderBy('email', 'asc')
-                    ->paginate(10);
+                    ->paginate(100);
 
                 $links = true;
             }

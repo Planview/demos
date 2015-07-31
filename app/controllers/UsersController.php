@@ -15,7 +15,7 @@ class UsersController extends Controller
         $users = DB::table('users')
             ->whereNotIn('id', $userIds)
             ->orderBy('company', 'asc')
-            ->paginate(10);
+            ->paginate(100);
 
         return View::make("users.index")->with(array("users"=>$users));
     }
@@ -65,36 +65,18 @@ class UsersController extends Controller
 
         if ($user->save()) {
             $user->confirm();
-            // if ($user_demo_access = UserDemoAccess::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
-            // if ($user_demo_access = User::updateUserDemoAccess($user->id, Input::get('demo-access'))) {
             
-            // $demo_access_selections = array();
             if (Input::get('demo-access')) {
-                // $demo_access_selections = Input::get('demo-access');
                 $user->demos()->sync(Input::get('demo-access'));
             }
 
-                return Redirect::action('users.index')
-                      ->with('message', "The user {$user->email} was successfully created.<br />Their password is: ".$password."<br />Their expiration date is: {$user->expires}");
-
-
-/*
-            if ($user->demos()->sync($demo_access_selections)) {
-            
-            // if ($user_demo_access = $user::updateUserDemoAccess(Input::get('demo-access'))) {
-                // return Redirect::action('users.show', $user->id)
-                return Redirect::action('users.index')
-                      ->with('message', "The user {$user->email} was successfully created.<br />Their password is: ".$password."<br />Their expiration date is: {$user->expires}");
-            } else {
-                $error = $user_demo_access->errors()->all(':message');
-
-                return Redirect::route('users.create')
-                    ->withInput(Input::except('password'))
-                    ->withError('There was a problem with your submission. The demo access selections did not save.')
-                    ->withErrors($user_demo_access->errors());
-            }
-*/
-
+            return Redirect::action('users.index')->with([
+                'message'               => "<p>The user {$user->email} was successfully created.<br />Their password is: ".$password."<br />Their expiration date is: {$user->expires}</p>",
+                'emailIsr'              => true,
+                'userEmail'             => $user->email,
+                'userPassword'          => $password,
+                'userExpirationDate'    => $user->expires
+            ]);
         } else {
             $error = $user->errors()->all(':message');
 
