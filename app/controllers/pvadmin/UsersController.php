@@ -37,7 +37,7 @@ class UsersController extends \BaseController {
             $title          = 'Manage All Users';
 
             if ($user->can('manage_admins')) {
-                $users = User::orderBy('email', 'asc')->paginate(10);
+                $users = User::orderBy('email', 'asc')->paginate(100);
                 $links = true;
             } else if ($user->can('manage_isrs')) {
                 $userIds = User::usersWithPermissionIdArray('manage_isrs');
