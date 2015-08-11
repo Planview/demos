@@ -102,6 +102,10 @@
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
         ga('create', 'UA-16646450-15', 'auto');
         ga('send', 'pageview');
+        ga('create', 'UA-16646450-1', 'auto', {'name': 'newTracker', 'allowLinker': true});
+        ga('newTracker.require', 'linker'); 
+        ga('newTracker.linker:autoLink', ['www.planview.com', 'www.planview.de', 'www.planview.fr'] ); 
+        ga('newTracker.send', 'pageview');
       </script>
       <script src="/js/main.js"></script>
     @if (Auth::check())
