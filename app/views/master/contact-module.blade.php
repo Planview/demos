@@ -14,7 +14,7 @@ $isr_contact_email = '<a href="mailto:market@planview.com" class="email-link" ti
         $isr_contact_phone = $associatedIsrInfo->isr_phone;
 
         if ($associatedIsrInfo->isr_mobile_phone) {
-            $isr_contact_mobile = 'Mobil: '.$associatedIsrInfo->isr_mobile_phone.'<br />';
+            $isr_contact_mobile = 'Mobile: '.$associatedIsrInfo->isr_mobile_phone.'<br />';
         } else {
             $isr_contact_mobile = '';
         }
@@ -31,7 +31,7 @@ $isr_contact_email = '<a href="mailto:market@planview.com" class="email-link" ti
     $isr_contact_phone = $associatedIsrInfo->isr_phone;
 
     if ($associatedIsrInfo->isr_mobile_phone) {
-        $isr_contact_mobile = 'Mobil: '.$associatedIsrInfo->isr_mobile_phone.'<br />';
+        $isr_contact_mobile = 'Mobile: '.$associatedIsrInfo->isr_mobile_phone.'<br />';
     } else {
         $isr_contact_mobile = '';
     }
