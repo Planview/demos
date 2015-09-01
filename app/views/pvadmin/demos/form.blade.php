@@ -37,7 +37,7 @@
             ) }}
             {{ ControlGroup::generate(
                 Form::label('enterprise_version', 'Enterprise Version'),
-                Form::select('enterprise_version', array('10.4' => 'PVE 10.4', '11' => 'PVE 11'), $demo->enterprise_version, ['required']) . $errors->first('enterprise_version', '<span class="label label-danger">:message</span>'),
+                Form::select('enterprise_version', array('10.4' => 'PVE 10.4', '11' => 'PVE 11', '11.4' => 'PVE 11.4'), $demo->enterprise_version, ['required']) . $errors->first('enterprise_version', '<span class="label label-danger">:message</span>'),
                 null,
                 3
             ) }}
