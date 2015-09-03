@@ -21,7 +21,7 @@
     <div id="left-gray-border" class="row">
       <div class="col-sm-5 col-md-4 col-lg-4">
         <div class="site-title">
-          <h1>Planview Enterprise Product Demos</h1>
+          <h1>Planview Product Demos</h1>
         </div>
       </div>
       <div class="site-info col-sm-7 col-md-8 col-lg-8">

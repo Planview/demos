@@ -8,7 +8,7 @@
 @stop
 
 @section("content")
-    <h1 id="page-title" class="sr-only">Planview Enterprise Product Demos</h1>
+    <h1 id="page-title" class="sr-only">Planview Product Demos</h1>
     @if (Auth::check())
     <div class="col-sm-4 col-sm-push-8">
 
@@ -43,14 +43,14 @@
       {{ Form::close() }}
     @endif
       <article class="col-sm-8 col-sm-pull-4 content">
-        <h2>Get a Look Inside Planview Enterprise</h2>
+        <h2>Get a Look Inside Planview Products</h2>
 
         <p>See how Planview helps enterprises drive innovation, become more agile and efficient, and improve their business performance. As the market leader in portfolio management, Planview combines a passion for customer success with a commitment to innovation and thought leadership. Throughout the enterprise, Planview's customers use portfolio management to capitalize on business opportunities and thrive in a dynamic, global economy.</p>
 
         @if (Auth::check())
             {{ Button::success('Go to Product Demos')->asLinkTo(route('demos.index')) }}
         @else
-            <p>Please email <a href="mailto:market@planview.com" title="Email market@planview.com">market@planview.com</a> to request access to Planview Enterprise product demos.</p>
+            <p>Please email <a href="mailto:market@planview.com" title="Email market@planview.com">market@planview.com</a> to request access to Planview product demos.</p>
         @endif
       </article>
 @stop

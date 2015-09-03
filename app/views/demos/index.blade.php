@@ -32,6 +32,6 @@
         </ul>
         {{--$demos->links()--}}
     @else
-        <p class="demo-list-instructions">Please email <a href="mailto:market@planview.com" title="Email market@planview.com">market@planview.com</a> to request access to Planview Enterprise product demos.</p>
+        <p class="demo-list-instructions">Please email <a href="mailto:market@planview.com" title="Email market@planview.com">market@planview.com</a> to request access to Planview product demos.</p>
     @endif
 @stop
