@@ -239,12 +239,16 @@ class UsersController extends \BaseController {
         $resultUser = $user->save();
 
         // isr input
-        if ($user->isrs->isEmpty()) {
-            $isr = new Isr(Input::all());
-            $resultIsr = $user->isrs()->save($isr);
-        } else {
-            $resultIsr = $user->isrs()->first()->fill(Input::all())->save();
-        }
+		if (Input::has('isr_first_name')) {
+			if ($user->isrs->isEmpty()) {
+				$isr = new Isr(Input::all());
+				$resultIsr = $user->isrs()->save($isr);
+			} else {
+				$resultIsr = $user->isrs()->first()->fill(Input::all())->save();
+			}
+		} else {
+			$resultIsr = true;
+		}
 
         if ($resultUser) {
             if ($resultIsr) {
