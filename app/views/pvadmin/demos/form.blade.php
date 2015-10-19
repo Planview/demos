@@ -43,7 +43,7 @@
             ) }}
             {{ ControlGroup::generate(
                 Form::label('language', 'Language'),
-                Form::select('language', array('Deutsch' => 'Deutsch', 'North America' => 'North America', 'UK' => 'UK'), $demo->language, ['required']) . $errors->first('language', '<span class="label label-danger">:message</span>'),
+                Form::select('language', array('Deutsch' => 'Deutsch', 'Italiano' => 'Italiano', 'North America' => 'North America', 'UK' => 'UK'), $demo->language, ['required']) . $errors->first('language', '<span class="label label-danger">:message</span>'),
                 null,
                 3
             ) }}
