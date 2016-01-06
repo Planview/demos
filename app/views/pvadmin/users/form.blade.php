@@ -48,8 +48,8 @@
                     <div class='form-group'>
                         <label for="roles" class="control-label col-sm-3">Is This User an ISR?</label>
                         <div class='col-sm-9' style="padding-top:8px;">
-                            <input {{{ $checked ? 'checked' : '' }}} name="roles" type="radio" value="{{ $roles->id }}"> Yes
-                            &nbsp; &nbsp; <input name="roles" type="radio" value=""> No
+                            <input {{{ $checked ? 'checked' : '' }}} name="roles[]" type="radio" value="{{ $roles->id }}"> Yes
+                            &nbsp; &nbsp; <input {{{ $checked ? '' : 'checked' }}} name="roles[]" type="radio" value=""> No
                         </div>
                     </div>
                 @endif
