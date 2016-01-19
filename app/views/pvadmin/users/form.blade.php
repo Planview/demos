@@ -3,6 +3,21 @@
 ?>
 @extends("master.layout")
 
+@section("styles")
+	@parent
+<style>
+	.admin-required-fields {
+		color:#FF0000;
+	}
+	.admin-required-fields-message {
+		margin-bottom:1.75em;
+	}
+	.isr-admin-required-fields-message {
+		display:none;
+	}
+</style>
+@stop
+
 @section("title")
     {{{ $title }}}
 @stop
@@ -14,6 +29,9 @@
 @section("content")
     <header class="page-header">
         <h1>{{{ $title }}}</h1>
+        @if (null === $user->id)
+        <ul><li><strong><a href="/users/create">Click here to add a new (non-admin) &ldquo;prospect&rdquo; user</a></strong></li></ul>
+        @endif
     </header>
     <article>
     <h2 class="sr-only">User Form Fields</h2>
@@ -21,10 +39,11 @@
         <div class="col-sm-9">
             <fieldset>
                 <legend>General Info</legend>
+                    <div class="admin-required-fields-message"><span class="admin-required-fields">*Fields marked in red are required</span></div>
                     @if (null === $user->id)
                     {{-- Test if we're creating a new user --}}
                         {{ ControlGroup::generate(
-                            Form::label('email', 'Email'),
+                            Form::label('email', 'Email', ['class' => 'admin-required-fields']),
                             Form::email('email', Input::old('email') ?: $user->email, ['required']) . $errors->first('email', '<span class="label label-danger">:message</span>'),
                             null,
                             3
@@ -45,17 +64,26 @@
                         3
                     ) }}
                 @else
+                	<?php
+					// set correct radio button to 'checked' when an error is returned
+					if (class_exists('Input') && !is_null(Input::old('roles'))) { 
+						if (Input::old('roles')[0] == '2') {
+							$checked = true;
+						}
+					}
+					?>
                     <div class='form-group'>
-                        <label for="roles" class="control-label col-sm-3">Is This User an ISR?</label>
+                        <label for="roles[]" class="control-label col-sm-3 admin-required-fields">Is This User an ISR?</label>
                         <div class='col-sm-9' style="padding-top:8px;">
-                            <input {{{ $checked ? 'checked' : '' }}} name="roles[]" type="radio" value="{{ $roles->id }}"> Yes
-                            &nbsp; &nbsp; <input {{{ $checked ? '' : 'checked' }}} name="roles[]" type="radio" value=""> No
+                            <input {{{ $checked ? 'checked' : '' }}} name="roles[]" type="radio" value="2" id="isr-choice-yes"> Yes
+                            &nbsp; &nbsp; <input {{{ $checked ? '' : 'checked' }}} name="roles[]" type="radio" value="" id="isr-choice-no"> No
                         </div>
                     </div>
                 @endif
             </fieldset>
             <fieldset>
                 <legend>ISR-Only Information</legend>
+                <div class="admin-required-fields admin-required-fields-message isr-admin-required-fields-message">*These fields are also required when the user is an ISR Admin</div>
                 {{ ControlGroup::generate(
                     Form::label('isr_first_name', 'ISR First Name'),
                     Form::text('isr_first_name', Input::old('isr_first_name', $isr->isr_first_name
@@ -140,6 +168,30 @@
             $("#password_confirmation").val('');
             $(this).blur();
         });
+	
+		$('.label-danger:contains("already been used")').after( '<p style="margin-top:0.5em;"><b><a href="/pvadmin/users/?userByEmail=<?php echo Input::old('email'); ?>">&ndash;&raquo; Click here to edit this existing user &laquo;&ndash;</a></b></p>' );
+
+<?php   // error checking for when Admins add new ISR Admins
+        if (!$multiple) { ?>
+        if($('#isr-choice-yes').is(':checked')) { 
+			$( ".isr-admin-required-fields-message" ).slideDown( "slow", function() {
+				$("label[for='isr_first_name'], label[for='isr_last_name'], label[for='isr_phone'], label[for='isr_location']").addClass('admin-required-fields');
+				$("#isr_first_name, #isr_last_name, #isr_phone, #isr_location").prop('required',true);
+			})
+		}
+		$("#isr-choice-yes").click(function(){
+			$( ".isr-admin-required-fields-message" ).slideDown( "slow", function() {
+				$("label[for='isr_first_name'], label[for='isr_last_name'], label[for='isr_phone'], label[for='isr_location']").addClass('admin-required-fields');
+				$("#isr_first_name, #isr_last_name, #isr_phone, #isr_location").prop('required',true);
+			});
+        });
+		$("#isr-choice-no").click(function(){
+			$( ".isr-admin-required-fields-message" ).slideUp( "slow", function() {
+				$("label[for='isr_first_name'], label[for='isr_last_name'], label[for='isr_phone'], label[for='isr_location']").removeClass('admin-required-fields');
+				$("#isr_first_name, #isr_last_name, #isr_phone, #isr_location").prop('required',false);
+			});
+        });
+<?php   } ?>
     });
     function generatePassword() {
         var length = 8,

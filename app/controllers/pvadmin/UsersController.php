@@ -85,7 +85,7 @@ class UsersController extends \BaseController {
         }
 
         return View::make('pvadmin.users.form')->with([
-            'title'     => 'Create a New User',
+            'title'     => 'Create a New Admin User',
             'action'    => 'pvadmin.users.store',
             'checked'   => $checked,
             'isr'       => $isr,
@@ -185,7 +185,7 @@ class UsersController extends \BaseController {
     {
         if (!Auth::user()->can('manage_admins') && $user->can('manage_isrs')) {
             return Redirect::route('pvadmin.users.index')
-                ->withError('Admins can only update ISR Admins.');
+                ->withError('Admins can only update ISR Admins.<br />Please contact a Super Admin to update:<br />' . $user->email);
         } else {
             if (!Auth::user()->can('manage_admins')) {
                 $roles      = Role::isrAdminRole();
