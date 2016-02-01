@@ -18,7 +18,7 @@ class CreateDemosTable extends Migration {
             $table->increments('id');
             $table->string('title',256);
             $table->text('description');
-            $table->string('enterprise_version',8);
+            $table->string('enterprise_version',64);
             $table->string('language',32);
             $table->text('demo_code');
             $table->text('related_content_code')->nullable();

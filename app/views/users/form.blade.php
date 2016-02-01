@@ -85,7 +85,7 @@
                 ?>
                 @forelse($demos as $demo)
                     @if (($demo->language != $previous_language) || ($demo->enterprise_version != $previous_enterprise_version))
-                        {{ '<h3>'.$demo->language.' - PVE '.$demo->enterprise_version.'</h3>' }}
+                        {{ '<h3>'.$demo->language.' - '.$demo->enterprise_version.'</h3>' }}
                     @endif
                     @if (null === $user->id)
                         <?php $checked = false; ?>

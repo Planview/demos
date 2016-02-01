@@ -21,7 +21,7 @@
             @forelse($demos as $demo)
                 @if (!$demo->deleted_at)
                     <li class="list-group-item">
-                    <h4 class="list-group-item-heading">{{{$demo->title}}} <small>{{{$demo->language}}}, PVE {{{$demo->enterprise_version}}}</small></h4>
+                    <h4 class="list-group-item-heading">{{{$demo->title}}} <small>{{{$demo->language}}}, {{{$demo->enterprise_version}}}</small></h4>
                         {{ Button::primary('Edit')->asLinkTo(route('pvadmin.demos.show', ['id' => $demo->id])) }}
                         {{ Form::inline([
                             'route' => ['pvadmin.demos.destroy', $demo->id],
@@ -39,7 +39,7 @@
             @forelse($demos as $demo)
                 @if ($demo->deleted_at)
                     <li class="list-group-item">
-                    <h4 class="list-group-item-heading">EXPIRED: {{{$demo->title}}} <small>{{{$demo->language}}}, PVE {{{$demo->enterprise_version}}}</small></h4>
+                    <h4 class="list-group-item-heading">EXPIRED: {{{$demo->title}}} <small>{{{$demo->language}}}, {{{$demo->enterprise_version}}}</small></h4>
                         {{ Button::primary('Edit')->asLinkTo(route('pvadmin.demos.show', ['id' => $demo->id])) }}
                         {{ Form::inline([
                             'route' => ['pvadmin.demos.destroy', $demo->id],
