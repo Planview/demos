@@ -37,7 +37,7 @@
             ) }}
             {{ ControlGroup::generate(
                 Form::label('enterprise_version', 'Enterprise Version'),
-                Form::select('enterprise_version', array('PVE 10.4' => 'PVE 10.4', 'PVE 11' => 'PVE 11', 'PVE 11.4' => 'PVE 11.4', 'PVE 11.5' => 'PVE 11.5', 'PVE 12' => 'PVE 12', 'Troux Insight 9.3' => 'Troux Insight 9.3', 'Troux 12' => 'Troux 12'), $demo->enterprise_version, ['required']) . $errors->first('enterprise_version', '<span class="label label-danger">:message</span>'),
+                Form::select('enterprise_version', array('PVE 10.4' => 'PVE 10.4', 'PVE 11' => 'PVE 11', 'PVE 11.4' => 'PVE 11.4', 'PVE 11.5' => 'PVE 11.5', 'PVE 12' => 'PVE 12', 'PVE 13' => 'PVE 13', 'Troux Insight 9.3' => 'Troux Insight 9.3', 'Troux 12' => 'Troux 12', 'Troux 13' => 'Troux 13'), $demo->enterprise_version, ['required']) . $errors->first('enterprise_version', '<span class="label label-danger">:message</span>'),
                 null,
                 3
             ) }}
