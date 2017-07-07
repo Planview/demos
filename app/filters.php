@@ -102,19 +102,9 @@ Route::filter('can', function ($route, $request, $permission)
     }
 });
 
-Route::filter('admin', function()
-{
-    if (Auth::check()) { // this is necessary for logging in
-        // Is this an admin user?
-        if (!Auth::user()->can('manage_clients')) {
-            return Redirect::to('/');
-        }
-    }
-});
-
 Route::filter('pvadmin', function()
 {
-    // Is this an admin or super admin user?
+    // Is this an admin or super admin?
     if (!Auth::user()->can('manage_isrs')) {
         return Redirect::to('/');
     }
@@ -122,14 +112,43 @@ Route::filter('pvadmin', function()
  
 Route::filter('superadmin', function()
 {
-    // Is this a super admin user?
+    // Is this a super admin?
     if (!Auth::user()->can('manage_admins')) {
         return Redirect::to('/');
     }
 });
 
-Route::when('users*', 'admin');
 Route::when('pvadmin/users*', 'pvadmin');
 Route::when('pvadmin/demos*', 'superadmin');
 Route::when('pvadmin/permissions*', 'superadmin');
 Route::when('pvadmin/roles*', 'superadmin');
+
+/*
+ / The /users URI is used during the login process and
+ / we only need to restrict three URIs to admin-only access:
+ / 1. /users -- lists all prospects
+ / 2. /users/create -- creates a new prospect with access
+ / 3. /users/"user ID" (which is numeric) -- allws for editing of a prospect
+*/
+
+Route::filter('admin', function()
+{
+  // Is this an ISR, admin, or super admin?
+  if (!Auth::user()->can('manage_clients')) {
+    return Redirect::to('/');
+  }
+});
+
+Route::filter('adminUserView', function()
+{
+  if ( is_numeric(substr($_SERVER['REQUEST_URI'], 7)) ) { // Is this the user edit form view (which is numeric)?
+    // Is this an ISR, admin, or super admin?
+    if (!Auth::user()->can('manage_clients')) {
+      return Redirect::to('/');
+    }
+  }
+});
+
+Route::when('users', 'admin');
+Route::when('users/create', 'admin');
+Route::when('users*', 'adminUserView');
