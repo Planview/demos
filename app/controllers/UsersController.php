@@ -146,7 +146,7 @@ class UsersController extends Controller
             $user->demos()->sync($demo_access_selections);
 
             return Redirect::action('users.show', $user->id)
-                  ->with('message', "The user {$user->email} was successfully updated.");
+                  ->with('message', "The user {$user->email} was successfully updated." . '<br /><br /><span style="color:#FF0000;font-weight:bold;">PLEASE NOTE:</span> Prospect updates are <b>not</b> automatically emailed -- it is up to you to inform the prospect of any changes (such as password updates, extending the user\'s access date, adding access to additional demos, etc.).');
         } else {
             return Redirect::route('users.show', $user->id)
                 ->withInput(Input::except('password'))

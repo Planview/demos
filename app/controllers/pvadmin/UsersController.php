@@ -56,7 +56,9 @@ class UsersController extends \BaseController {
                 $users = User::usersWithAbility('ISR Admin', 'manage_clients');
             }
         }
-
+		////////////////////////////////////////////////
+		//$isrs  = User::isrList();
+		////////////////////////////////////////////////
         return View::make('pvadmin.users.index')->with([
             'links'     => $links,
             'title'     => $title,
@@ -253,7 +255,7 @@ class UsersController extends \BaseController {
         if ($resultUser) {
             if ($resultIsr) {
                 return Redirect::route('pvadmin.users.show', $user->id)
-                    ->withMessage('This user was updated.');
+                    ->withMessage('This user was updated.<br /><br /><span style="color:#FF0000;font-weight:bold;">PLEASE NOTE:</span> For security reasons, admin updates are <b>not</b> automatically emailed -- it is up to you to inform the admin of any changes (such as password updates).');
             } else {
                 return Redirect::route('pvadmin.users.show', $user->id)
                     ->withInput(Input::except('password'))
