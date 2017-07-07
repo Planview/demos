@@ -13,7 +13,16 @@
       <!-- individual page styles -->
     @show
   </head>
-  <body class="{{{ $body_class or '' }}}"> 
+  <body class="{{{ $body_class or '' }}}">
+  {{-- Google Tag Manager --}}
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KJRXS3"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KJRXS3');</script>
+  {{-- End Google Tag Manager --}}
   <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
   <div id="site-wrapper" class="container">
@@ -39,6 +48,7 @@
                         <li><a href="/users" id="topnav-admin" class="navbar-nav-link-top">Admin</a>
                         <ul class="dropdown-menu">
                             @section('nav_menu_admin')
+                                <li>{{HTML::link('/users', 'Prospect Users', array('id' => 'topnav-prospect-users'));}}</li>
                                 <li>{{HTML::link('/pvadmin/users', 'Admin Users', array('id' => 'topnav-admin-users'));}}</li>
                                 <li>{{HTML::link('/pvadmin/users?allUsers=true', 'All Users', array('id' => 'topnav-admin-users-all'));}}</li>
                                 @if (Auth::user()->can('manage_admins'))
@@ -94,19 +104,6 @@
       <script src="/js/jquery.smartmenus.js"></script>
       {{-- SmartMenus jQuery Bootstrap Addon --}}
       <script src="/js/jquery.smartmenus.bootstrap.js"></script>
-      {{-- Google Analytics --}}
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-16646450-15', 'auto');
-        ga('send', 'pageview');
-        ga('create', 'UA-16646450-1', 'auto', {'name': 'newTracker', 'allowLinker': true});
-        ga('newTracker.require', 'linker'); 
-        ga('newTracker.linker:autoLink', ['www.planview.com', 'www.planview.de', 'www.planview.fr'] ); 
-        ga('newTracker.send', 'pageview');
-      </script>
       <script src="/js/main.js"></script>
     @if (Auth::check())
         {{-- Marketo Munchkin Lead Tracking Code --}}
